@@ -4,7 +4,7 @@ A machine learning program to predict house rent in different locations in **Dha
 
 ## Overview
 
-This project is a simple Python program that predicts house rent at various locations in Dhaka, Bangladesh, using a linear regression model with L2 Regularization built completely from scratch. From model training to showing predictions, it handles **all aspects of the machine learning** pipeline, including data preprocessing, feature engineering, model training, and evaluation **without reliance on any external libraries**. The project also **includes a web interface** for user interaction, allowing users to input their own data and receive rent predictions in real-time.
+This project is a simple Python program that predicts house rent at various locations in Dhaka, Bangladesh, using a linear regression model with L2 Regularization built completely from scratch. From data ingestion to rent prediction, this project covers the **all aspects of the machine learning** pipeline, including data preprocessing, feature engineering, model training, and evaluation **without reliance on any external libraries**. The project also **includes a web interface** for user interaction, allowing users to input their own data and receive rent predictions in real-time.
 
 What's truly surprising is that this scratch-built model performs almost identically to highly optimized Scikit-learn's `LinearRegression` in terms of performance metrics like R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). Check out the detailed analysis in the [Performance Analysis](#performance-analysis-against-scikit-learn) section.
 
@@ -187,6 +187,8 @@ This wasn’t just about coding — it was about **learning by building**.
    - Select the type of house (apartment or building or duplex).
 4. **Get the prediction**:
    Click the "Predict Rent" button to get the predicted rent value based on your inputs. The prediction will be displayed on the web interface.
+
+Note: This application runs **_entirely through the browser_**. The terminal **only displays logs** — no CLI interaction is required. You can see the screenshot of the terminal logs attached in the [Further Tweaks](#further-tweaks) section below.
 
 ## Usage Example
 
