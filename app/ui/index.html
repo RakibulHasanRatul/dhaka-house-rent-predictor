@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dhaka Rent Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+  </head>
+  <body class="bg-gray-900 text-gray-100">
+    <div class="flex items-center justify-center h-screen">
+      <div class="max-w-3xl w-[36rem] mx-auto px-6 py-10">
+        <!-- Header -->
+        <h1 class="text-4xl font-bold mb-4">Dhaka Rent Predictor</h1>
+        <p class="text-lg mb-6 text-gray-300">
+          Get a prediction about the house rent in Dhaka, Bangladesh using
+          various features. <br /><br />
+          <span class="text-red-500"
+            >Note that output may differ from the actual rent.</span
+          >
+        </p>
+
+        <!-- Output -->
+        <div
+          id="output"
+          class="mt-5 w-full hidden outline outline-2 outline-blue-500 p-5 rounded-lg"
+        >
+          <h2 class="text-2xl font-semibold mb-2">Prediction Result</h2>
+          <p
+            class="text-xl text-green-400 font-medium"
+            id="prediction-text"
+          ></p>
+        </div>
+
+        <!-- Input Features -->
+        <h2 class="text-2xl font-semibold mt-8 mb-4">Input Features</h2>
+
+        <form id="predict-form" class="space-y-4">
+          <!-- Feature inputs -->
+          <div class="flex items-center space-x-4">
+            <label class="w-48 font-medium">Number of Bedroom</label>
+            <input
+              type="number"
+              id="bedroom"
+              step="any"
+              class="appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-80 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div class="flex items-center space-x-4">
+            <label class="w-48 font-medium">Number of Washrooms</label>
+            <input
+              type="number"
+              id="washroom"
+              step="any"
+              class="appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-80 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div class="flex items-center space-x-4">
+            <label class="w-48 font-medium">Floor Area (in sq ft)</label>
+            <input
+              type="number"
+              id="floor-area"
+              step="any"
+              class="appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-80 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <!-- dropdown -->
+          <div class="pt-4 flex items-center space-x-4">
+            <h3 class="text-xl w-48 font-semibold mb-2">Select Location</h3>
+            <select
+              class="w-80 max-w-xs px-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              id="location-selector"
+            ></select>
+          </div>
+          <div class="pt-2 flex items-center space-x-4">
+            <h3 class="text-xl w-48 font-semibold mb-2">Select Type</h3>
+            <select
+              class="w-80 max-w-xs px-4 py-2 bg-gray-800 border border-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              id="type-selector"
+            ></select>
+          </div>
+
+          <!-- Predict button -->
+          <div class="pt-6">
+            <button
+              type="submit"
+              class="w-[32.5rem] bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold py-3 rounded-lg transition"
+            >
+              Predict Rent
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      const form = document.getElementById("predict-form");
+      const output = document.getElementById("output");
+      const result = document.getElementById("prediction-text");
+
+      fetch("/locations", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const location_selector =
+            document.getElementById("location-selector");
+          data.locations.forEach((location) => {
+            const option = document.createElement("option");
+            option.value = location;
+            option.textContent = location;
+            location_selector.appendChild(option);
+          });
+        })
+        .catch((error) => console.error("Error fetching locations:", error));
+
+      fetch("/types", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const type_selector = document.getElementById("type-selector");
+          data.types.forEach((type) => {
+            const option = document.createElement("option");
+            option.value = type;
+            option.textContent = type;
+            type_selector.appendChild(option);
+          });
+        })
+        .catch((error) => console.error("Error fetching types:", error));
+
+      // Handle form submission
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const numberOfBedrooms = parseFloat(
+          document.getElementById("bedroom").value
+        );
+        const numberOfWashrooms = parseFloat(
+          document.getElementById("washroom").value
+        );
+        const floorArea = parseFloat(
+          document.getElementById("floor-area").value
+        );
+        const type = document.getElementById("type-selector").value;
+        const location = form.querySelector("#location-selector").value;
+
+        fetch("/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            numberOfBedrooms,
+            numberOfWashrooms,
+            floorArea,
+            type,
+            location,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const prediction = data.prediction;
+            output.classList.remove("hidden");
+            result.textContent = `Predicted Rent: ${prediction} BDT`;
+          })
+          .catch((error) => console.error("Error fetching prediction:", error));
+      });
+    </script>
+  </body>
+</html>

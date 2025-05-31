@@ -1,0 +1,8 @@
+DATA_DOWNLOAD_DIR = "data/raw"
+DATA_PROCESSED_DIR = "data/processed"
+LOCATION_JSON_DIR = f"{DATA_PROCESSED_DIR}/locations.json"
+TYPES_JSON_DIR = f"{DATA_PROCESSED_DIR}/types.json"
+WEIGHTS_JSON_DIR = f"{DATA_PROCESSED_DIR}/weights.json"
+RAW_KAGGLE_CSV_GIST_URL = "https://gist.githubusercontent.com/RakibulHasanRatul/5301fdd000b2db474e336680deb10db0/raw/ff38f2e05fdbc19c0110a0cd3e28c913cd8a1a3c/raw-csv-by-kaggle-for-dhaka-rent-predictor.csv"
+FORMATTED_CSV_GIST_URL = "https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv"
+UI_DIR = "app/ui"
