@@ -8,6 +8,8 @@ This project is a simple Python program that predicts house rent at various loca
 
 What's truly surprising is that this scratch-built model performs almost identically to highly optimized Scikit-learn's `LinearRegression` in terms of performance metrics like R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). Check out the detailed analysis in the [Performance Analysis](#performance-analysis-against-scikit-learn) section.
 
+Even more, the model is speedy too! It results **within 0.2 seconds utilizing pure python**. Detailed speed tests are shown in the [speedtest.md](./speedtest.md) file.
+
 Another surprising aspect is that the scratch-built model is **almost 1.9 times faster for smaller datasets** than Scikit-learn's implementation, as shown in the [speedtest.md](./speedtest.md) file. **_However, for bigger datasets, the scratch-built model performs too poorly compared to sklearn's implementation._**
 
 ## Table of Contents
