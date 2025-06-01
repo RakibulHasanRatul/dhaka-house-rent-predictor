@@ -100,9 +100,11 @@ This project tackles several challenges by deliberately avoiding common external
 
 I ran benchmark tests against Scikit-learn's `LinearRegression` based on 5-fold cross-validation, determining R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). I found that **the custom implementation performs almost identically, and in some instances, even marginally better than the highly optimized Scikit-learn library.** The differences in performance metrics are often in the **decimal places**, highlighting the precision of the from-scratch approach.
 
+For this specific dataset provided through the GitHub Gist, the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model** utilizing the provided dataset. Speedtest results are available in the [speedtest.md](./speedtest.md) file.
+
 My step-by-step procedures and detailed [benchmark test results](./benchmarks.md#benchmark-test-results) are documented in the [benchmarks.md](./benchmarks.md) file.
 
-### Key Observations:
+### Key Observations in Benchmark Results:
 
 1.  **Negative R Squared Values:**
 
@@ -127,6 +129,10 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
       - MAE (Scratch): `2649.31827`, MAE (Sklearn): `2649.31827`
 
     Such minute differences are well within acceptable margins for floating-point arithmetic and different internal optimization strategies, essentially signifying identical performance.
+
+### Summary of Performance Analysis
+
+The performance analysis shows that the scratch-built linear regression model is not only competitive with Scikit-learn's implementation but also demonstrates a deep understanding of the underlying mechanics of machine learning. The results indicate that the custom implementation can achieve similar or even slightly better performance metrics while being significantly faster for **this specific dataset**.
 
 ## How Does It Work?
 
