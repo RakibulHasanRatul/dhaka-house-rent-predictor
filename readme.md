@@ -1,16 +1,14 @@
-# Dhaka House Rent predictor : A Machine Learning Program Built from Scratch
+# Dhaka House Rent predictor: A Machine Learning Model Built from Scratch
 
 A machine learning program to predict house rent in different locations in **Dhaka, Bangladesh**.
 
 ## Overview
 
-This project is a simple Python program that predicts house rent at various locations in Dhaka, Bangladesh, using a linear regression model with L2 Regularization built completely from scratch. From data ingestion to rent prediction, this project covers the **all aspects of the machine learning** pipeline, including data preprocessing, feature engineering, model training, and evaluation **without reliance on any external libraries**. The project also **includes a web interface** for user interaction, allowing users to input their own data and receive rent predictions in real-time.
+This project is a simple Python program that predicts house rent at various locations in Dhaka, Bangladesh, using a linear regression model with L2 Regularization built completely from scratch. From data ingestion to rent prediction, this project covers **all aspects of the machine learning** pipeline, including data preprocessing, feature engineering, model training, and evaluation **without reliance on any external libraries**. The project also **includes a web interface** for user interaction, allowing users to input their own data and receive rent predictions in real-time.
 
 What's truly surprising is that this scratch-built model performs almost identically to highly optimized Scikit-learn's `LinearRegression` in terms of performance metrics like R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). Check out the detailed analysis in the [Performance Analysis](#performance-analysis-against-scikit-learn) section.
 
-Even more, the model is speedy too! It results **within 0.2 seconds utilizing pure python**. Detailed speed tests are shown in the [speedtest.md](./speedtest.md) file.
-
-Another surprising aspect is that the scratch-built model is **almost 1.9 times faster for smaller datasets** than Scikit-learn's implementation, as shown in the [speedtest.md](./speedtest.md) file. **_However, for bigger datasets, the scratch-built model performs too poorly compared to sklearn's implementation._**
+The model also offers surprisingly fast performance, delivering predictions in **under 0.2 seconds** using pure Python. In fact, it’s been benchmarked to run **up to 1.9× faster** than Scikit-learn’s implementation on **smaller datasets**, as shown in the [speedtest.md](./speedtest.md) file. **_However, performance significantly drops on larger datasets, where Scikit-learn's optimized implementation clearly outperforms the scratch-built model._**
 
 ## Table of Contents
 
@@ -28,7 +26,7 @@ Another surprising aspect is that the scratch-built model is **almost 1.9 times 
 
 ## Engineering Against The Odds
 
-This project tackles several challenges by deliberately avoiding common external libraries and frameworks. This approach not only showcases a deep understanding of underlying computational mechanics but also proves that complex tasks can be achieved with foundational knowledge.
+This project embraces several unconventional engineering choices — deliberately avoiding external libraries and modern frameworks — to showcase the true power of raw Python and algorithmic fundamentals.
 
 - **Using ZERO external dependencies**
 
@@ -55,7 +53,7 @@ This project tackles several challenges by deliberately avoiding common external
   ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**  
   ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**  
   🗸 Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).  
-  ⛌ No `Scikit-learn`, `TensorFlow`, or **other machine learning libraries.**
+  ⛌ No `Scikit-learn`, `TensorFlow`, or **other machine learning libraries** at all.
 
   A minimalist [`pyproject.toml`](./pyproject.toml) confirms zero external runtime dependencies.
 
@@ -104,7 +102,7 @@ This project tackles several challenges by deliberately avoiding common external
 
 I ran benchmark tests against Scikit-learn's `LinearRegression` based on 5-fold cross-validation, determining R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). I found that **the custom implementation performs almost identically, and in some instances, even marginally better than the highly optimized Scikit-learn library.** The differences in performance metrics are often in the **decimal places**, highlighting the precision of the from-scratch approach.
 
-For this specific dataset provided through the GitHub Gist, the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model for smaller datasets**. Speedtest results are available in the [speedtest.md](./speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for larger datasets, and the performance gap may narrow or even reverse with larger datasets. And it is as shown in the [speedtest.md](./speedtest.md) file, the scratch-built model performs too poorly compared to Scikit-learn's implementation for bigger datasets.  
+For this specific dataset the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model for smaller datasets**. Speedtest results are available in the [speedtest.md](./speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for larger datasets, and the performance gap may narrow or even reverse with larger datasets. As shown in the [speedtest.md](./speedtest.md), performance drops significantly for larger datasets — where Scikit-learn’s optimized backend excels.  
 **_Note that the performance characteristics may vary with different datasets and configurations._**
 
 My step-by-step procedures and detailed [benchmark test results](./benchmarks.md#benchmark-test-results) are documented in the [benchmarks.md](./benchmarks.md) file.
@@ -133,7 +131,7 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
       - MSE (Scratch): `23579784.62581`, MSE (Sklearn): `23579784.59745`
       - MAE (Scratch): `2649.31827`, MAE (Sklearn): `2649.31827`
 
-    Such minute differences are well within acceptable margins for floating-point arithmetic and different internal optimization strategies, essentially signifying identical performance.
+These findings reinforce the model's correctness and accuracy, even without external numerical libraries.
 
 ### Summary of Performance Analysis
 
@@ -178,7 +176,7 @@ Most machine learning projects rely heavily on pre-built libraries. But I wanted
 
 I initially used `polars` for data and considered `streamlit` for UI, until I realized they pulled in heavy dependencies like `numpy`. So I ditched them. I rewrote the data loading logic using `csv`, built my own matrix operations, and crafted the frontend using pure HTML, Tailwind, and JS — no frameworks, no fluff.
 
-This wasn’t just about coding — it was about **learning by building**.
+This project wasn’t just about writing code — it was about **deeply learning through deliberate construction.**
 
 ## How to Run?
 
@@ -205,12 +203,13 @@ Note: This application runs **_entirely through the browser_**. The terminal **o
 
 After entering the required details in the web interface, you can click the "Predict Rent" button to get the predicted rent value. The prediction will be displayed like below.
 
-![app interface](./screenshots/app-interface.png)
+> Example of the web UI showing rent prediction output.
+> ![app interface](./screenshots/app-interface.png)
 
 ## Further Tweaks
 
 In the [config.py](./config.py) file, you can adjust the **directory paths and URLs** if you wish to.
-By default it will download the **formatted dataset** from the `GitHub Gist` URL and save it in the `data/` directory (will create it if not created already). You can let the program work with the messy dataset sourced from Kaggle by setting the `from_raw_csv` to `True` (in line 34) in `load_data_and_train_model` function defined in [run.py](./run.py) file. The preprocessing logic for Kaggle sourced dataset is defined in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py) (in the `load_and_refit_kaggle_csv` function).
+By default it will download the **formatted dataset** from the `GitHub Gist` URL and save it in the `data/` directory (and will create it if not created already). You can let the program work with the messy dataset sourced from Kaggle by setting the `from_raw_csv` to `True` (in line 34) in `load_data_and_train_model` function defined in [run.py](./run.py) file. The preprocessing logic for Kaggle sourced dataset is defined in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py) (in the `load_and_refit_kaggle_csv` function).
 
 You should see these logs in the terminal when you run the program:
 
