@@ -2,7 +2,11 @@
 
 Well, for further look to my scratch implementation of linear regression, I have created a speed test against Scikit-Learn's implementation. The results are quite interesting. I found that my implementation is faster than Scikit-Learn's for this dataset! Although this dataset has only 5333 rows only.
 
+But, it's only the one side of the story. The scratch implementation is definitely faster, but only for smaller datasets. As the dataset size increases, the performance of the scratch implementation degrades significantly compared to Scikit-Learn's implementation!
+
 ## Results With Smaller Datasets
+
+Firstly, I created a python script to measure the speeds of each implementations. I left the code as it is for preprocessing. The current version generates a less number of elements in the feature vector for each location.
 
 After running the speed test using the [script](#script-i-used) provided below, I got the following results:
 
@@ -71,11 +75,8 @@ So, what I did here is to run the same [script](#script-i-used) but with a small
 def construct_location_from_area(addr: str) -> str:
     parts = [part.strip() for part in addr.split(",")]
     if len(parts) < 2:
-        # if len(parts) == 1:
         return addr.title()
-    # return f"{parts[-2]}, {parts[-1]}".title()
 
-    # level3 = parts[-3]
     level2 = parts[-2]
     level1 = parts[-1]
 
@@ -136,6 +137,12 @@ See, performance is degrading. The scratch-built model is still faster than Scik
 This indicates that while the scratch implementation is still faster, it may not scale as well as Scikit-Learn's implementation for larger datasets. Further optimizations may be needed to improve the performance of the scratch-built model on larger datasets.
 
 This speed test highlights the strengths and weaknesses of both implementations. The scratch-built model is faster for smaller datasets, but Scikit-Learn's implementation is more robust and scalable for larger datasets.
+
+## Summary of Overall Results
+
+In summary, the speed test results indicate that the scratch-built linear regression model is faster than Scikit-Learn's implementation for smaller datasets, but its performance degrades with larger datasets.
+
+The scratch-built model is only efficient when working with too small datasets yet having resource limitations. For larger datasets, Scikit-Learn's implementation is more efficient and robust, making it a better choice for production use cases.
 
 ## Script I Used
 
