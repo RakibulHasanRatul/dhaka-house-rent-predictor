@@ -102,7 +102,8 @@ This project tackles several challenges by deliberately avoiding common external
 
 I ran benchmark tests against Scikit-learn's `LinearRegression` based on 5-fold cross-validation, determining R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). I found that **the custom implementation performs almost identically, and in some instances, even marginally better than the highly optimized Scikit-learn library.** The differences in performance metrics are often in the **decimal places**, highlighting the precision of the from-scratch approach.
 
-For this specific dataset provided through the GitHub Gist, the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model** utilizing the provided dataset. Speedtest results are available in the [speedtest.md](./speedtest.md) file.
+For this specific dataset provided through the GitHub Gist, the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model** utilizing the provided dataset. Speedtest results are available in the [speedtest.md](./speedtest.md) file.  
+**_Note that the performance characteristics may vary with different datasets and configurations._**
 
 My step-by-step procedures and detailed [benchmark test results](./benchmarks.md#benchmark-test-results) are documented in the [benchmarks.md](./benchmarks.md) file.
 
