@@ -50,9 +50,9 @@ This project tackles several challenges by deliberately avoiding common external
 
   From model training to the web interface and its backend — **everything is built using Python’s standard library only**!
 
-  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**
-  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**
-  🗸 Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).
+  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**  
+  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**  
+  🗸 Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).  
   ⛌ No `Scikit-learn`, `TensorFlow`, or **other machine learning libraries.**
 
   A minimalist [`pyproject.toml`](./pyproject.toml) confirms zero external runtime dependencies.
