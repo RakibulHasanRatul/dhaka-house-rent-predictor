@@ -2,7 +2,7 @@
 
 Well, for further look to my scratch implementation of linear regression, I have created a speed test against Scikit-Learn's implementation. The results are quite interesting. I found that my implementation is faster than Scikit-Learn's for this dataset! Although this dataset has only 5333 rows only.
 
-# Results
+## Results With Smaller Datasets
 
 After running the speed test using the [script](#script-i-used) provided below, I got the following results:
 
@@ -60,6 +60,82 @@ The speed test was conducted three times, and the results were consistent across
 The average time taken by the scratch-built model was approximately 0.1373 seconds, while the average time for the Scikit-Learn model was around 0.2894 seconds.  
 This indicates that the scratch implementation is approximately 1.9 times faster than Scikit-Learn's implementation for this specific dataset.  
 This shows that for this specific dataset, the scratch implementation is faster than Scikit-Learn's implementation. It's important to note that this result may vary with different datasets and configurations, but it is a promising outcome for the scratch implementation.
+
+## Results With Larger Datasets
+
+However, it's crucial to evaluate the performance of both models on larger datasets as well. Preliminary tests indicate that while the scratch-built model performs admirably on smaller datasets, its performance may degrade with larger datasets. In contrast, Scikit-Learn's implementation is optimized for scalability and may outperform the scratch model in such scenarios.
+
+So, what I did here is to run the same [script](#script-i-used) but with a small tweak. I changed the `construct_location_from_area` function in the `app/handler/data/preprocess.py`. It will ensure larger feature set is created for a secific location. The cnage I made is:
+
+```python
+def construct_location_from_area(addr: str) -> str:
+    parts = [part.strip() for part in addr.split(",")]
+    if len(parts) < 2:
+        # if len(parts) == 1:
+        return addr.title()
+    # return f"{parts[-2]}, {parts[-1]}".title()
+
+    # level3 = parts[-3]
+    level2 = parts[-2]
+    level1 = parts[-1]
+
+    return f"{level2}, {level1}".title()
+```
+
+After changing the function, I ran the same script and got following results:
+
+### 1st Run with Larger Datasets
+
+```plaintext
+❯ python speed_test.py
+Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
+
+File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
+
+Working on 41 locations.
+Skipped 19 locations due to insufficient data.
+Running scratch-built model...
+Scratch-built model took 0.1334 seconds.
+Running sklearn model...
+Sklearn model took 0.1058 seconds.
+```
+
+### 2nd Run with Larger Datasets
+
+```plaintext
+❯ python speed_test.py
+Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
+
+File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
+
+Working on 41 locations.
+Skipped 19 locations due to insufficient data.
+Running scratch-built model...
+Scratch-built model took 0.1327 seconds.
+Running sklearn model...
+Sklearn model took 0.1051 seconds
+```
+
+### 3rd Run with Larger Datasets
+
+```plaintext
+❯ python speed_test.py
+Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
+
+File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
+
+Working on 41 locations.
+Skipped 19 locations due to insufficient data.
+Running scratch-built model...
+Scratch-built model took 0.1325 seconds.
+Running sklearn model...
+Sklearn model took 0.1057 seconds.
+```
+
+See, performance is degrading. The scratch-built model is still faster than Scikit-Learn's implementation, but the difference is not as significant as with both datasets. The average time taken by the scratch-built model was approximately 0.1329 seconds, while the average time for the Scikit-Learn model was around 0.1055 seconds. Although in this case, the scratch-built model is approximately 1.26 times faster than Scikit-Learn's implementation, the gap is narrowing as the dataset size increases.
+This indicates that while the scratch implementation is still faster, it may not scale as well as Scikit-Learn's implementation for larger datasets. Further optimizations may be needed to improve the performance of the scratch-built model on larger datasets.
+
+This speed test highlights the strengths and weaknesses of both implementations. The scratch-built model is faster for smaller datasets, but Scikit-Learn's implementation is more robust and scalable for larger datasets.
 
 ## Script I Used
 
