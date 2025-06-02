@@ -204,7 +204,7 @@ Note: This application runs **_entirely through the browser_**. The terminal **o
 After entering the required details in the web interface, you can click the "Predict Rent" button to get the predicted rent value. The prediction will be displayed like below.
 
 > Example of the web UI showing rent prediction output.
-> ![app interface](./screenshots/app-interface.png)
+> ![app interface](./images/screenshots/app-interface.png)
 
 ## Further Tweaks
 
@@ -213,7 +213,7 @@ By default it will download the **formatted dataset** from the `GitHub Gist` URL
 
 You should see these logs in the terminal when you run the program:
 
-![Terminal Logs](./screenshots/terminal-logs.png)
+![Terminal Logs](./images/screenshots/terminal-logs.png)
 
 ## Future Plans
 
