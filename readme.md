@@ -2,6 +2,8 @@
 
 A machine learning program to predict house rent in different locations in **Dhaka, Bangladesh**.
 
+<img src="./images/banner.jpeg" alt="banner" width="400" >
+
 ## Overview
 
 This project is a simple Python program that predicts house rent at various locations in Dhaka, Bangladesh, using a linear regression model with L2 Regularization built completely from scratch. From data ingestion to rent prediction, this project covers **all aspects of the machine learning** pipeline, including data preprocessing, feature engineering, model training, and evaluation **without reliance on any external libraries**. The project also **includes a web interface** for user interaction, allowing users to input their own data and receive rent predictions in real-time.
@@ -15,11 +17,11 @@ The model also offers surprisingly fast performance, delivering predictions in *
 ## Table of Contents
 
 - [Engineering Against The Odds](#engineering-against-the-odds)
-- [What's Magical About It?](#whats-magical-about-it)
+- [What Makes It Stand Out](#what-makes-it-stand-out)
 - [Performance Analysis Against Scikit-learn](#performance-analysis-against-scikit-learn)
-- [How Does It Work?](#how-does-it-work)
-- [Why I Built Everything from Scratch?](#why-i-built-everything-from-scratch)
-- [How to Run?](#how-to-run)
+- [How Does It Work](#how-does-it-work)
+- [Why I Built Everything from Scratch](#why-i-built-everything-from-scratch)
+- [How to Run](#how-to-run)
 - [Usage Example](#usage-example)
 - [Further Tweaks](#further-tweaks)
 - [Future Plans](#future-plans)
@@ -46,7 +48,7 @@ This project embraces several unconventional engineering choices — deliberatel
 
   Instead of relying on highly optimized external libraries for matrix operations, this project implements core linear algebra algorithms from scratch. This includes **Gaussian Elimination** (or Gauss-Jordan Elimination) for matrix inversion, and standard textbook methods for multiplication and transpose. This provides complete control over the mathematical heart of the model, proving its feasibility while still maintaining suitable performance for the dataset size.
 
-## What Makes It Stand Out?
+## What Makes It Stand Out
 
 - **Zero External Dependencies**
 
@@ -183,7 +185,7 @@ I initially used `polars` for data and considered `streamlit` for UI, until I re
 >
 > This approach aligns with the philosophy of “learning by implementation,” a method inspired by MIT’s approach in courses like 6.036 — where understanding models from the ground up is key to mastering them.
 
-## How to Run?
+## How to Run
 
 1. **Clone the repository and execute the run.py file**:
    ```bash
