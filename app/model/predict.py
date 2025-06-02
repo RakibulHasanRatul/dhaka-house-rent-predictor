@@ -17,6 +17,9 @@ def predict_rent(location: str, *features: float) -> float:
 
     rent_prediction = 0.0
     for i in range(n):
+        # the main formula is y = w^T.x (w is the weights vector, widely referred as theta)
+        # but I don't waste computing resources to transpose it.
+        # rather, using [i][0] is more efficient.
         rent_prediction += desired_weights[i][0] * x[i]
 
     return abs(rent_prediction)  # Ensure the prediction is non-negative

@@ -144,7 +144,7 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
 >
 > These findings reinforce the model's correctness and accuracy, even without external numerical libraries.
 
-## How Does It Work?
+## How Does It Work
 
 - **Data downloading**
 
@@ -160,7 +160,7 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
 
 - **Model training**
 
-  Determines the weight vectors for each location in the preprocessed data using the linear regression model with L2 regularization ($ \theta = (X^T X + \lambda I)^{-1} X^T Y $) and stores these weight vectors in a local JSON file.
+  Determines the weight vectors for each location in the preprocessed data using the linear regression model with L2 regularization ($ \theta = (X^T X + \lambda I)^{-1} X^T Y $) and stores these weight vectors in a local JSON file (in data/processed/weights.json).
 
   [[Logic: `app/model/train.py`](./app/model/train.py)]
 
@@ -173,7 +173,7 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
 
 - **Prediction**
 
-  Takes user input from the web interface, preprocesses it, and uses the trained location-specific model to predict the rent based on the input data.
+  Takes user input from the web interface, preprocesses it, and uses the trained location-specific model (calculated weights in _model training_ step) to predict the rent based on the input data. Specifically, it retrieves the weights for the selected location from the JSON file and uses them to calculate the predicted rent using formula $\hat{y} = \theta^T X$.
 
   [[Logic: `app/handler/predict.py`](./app/handler/predict.py)]
 
