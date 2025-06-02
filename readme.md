@@ -10,6 +10,8 @@ What's truly surprising is that this scratch-built model performs almost identic
 
 The model also offers surprisingly fast performance, delivering predictions in **under 0.2 seconds for 5332 datasets** using pure Python. In fact, it’s been benchmarked to run **up to 1.9× faster** than Scikit-learn’s implementation on **smaller datasets** just because of _numpy warmup time_, as shown in the [speedtest.md](./speedtest.md) file. **_However, performance significantly drops on larger datasets, where Scikit-learn's optimized implementation clearly outperforms the scratch-built model._**
 
+> One line summary: Predicts house rent in Dhaka using a fully scratch-built ML pipeline with zero external libraries.
+
 ## Table of Contents
 
 - [Engineering Against The Odds](#engineering-against-the-odds)
@@ -44,7 +46,7 @@ This project embraces several unconventional engineering choices — deliberatel
 
   Instead of relying on highly optimized external libraries for matrix operations, this project implements core linear algebra algorithms from scratch. This includes **Gaussian Elimination** (or Gauss-Jordan Elimination) for matrix inversion, and standard textbook methods for multiplication and transpose. This provides complete control over the mathematical heart of the model, proving its feasibility while still maintaining suitable performance for the dataset size.
 
-## What's Magical About It?
+## What Makes It Stand Out?
 
 - **Zero External Dependencies**
 
@@ -178,6 +180,8 @@ I initially used `polars` for data and considered `streamlit` for UI, until I re
 
 This project wasn’t just about writing code — it was about **deeply learning through deliberate construction.**
 
+This approach aligns with the philosophy of “learning by implementation,” a method inspired by MIT’s approach in courses like 6.036 — where understanding models from the ground up is key to mastering them.
+
 ## How to Run?
 
 1. **Clone the repository and execute the run.py file**:
@@ -197,13 +201,13 @@ This project wasn’t just about writing code — it was about **deeply learning
 4. **Get the prediction**:
    Click the "Predict Rent" button to get the predicted rent value based on your inputs. The prediction will be displayed on the web interface.
 
-Note: This application runs **_entirely through the browser_**. The terminal **only displays logs** — no CLI interaction is required. You can see the screenshot of the terminal logs attached in the [Further Tweaks](#further-tweaks) section below.
+Note: This application runs **_entirely through the browser_**. **All interaction happens through the browser**, the terminal shows only backend logs. You can see the screenshot of the terminal logs attached in the [Further Tweaks](#further-tweaks) section below.
 
 ## Usage Example
 
 After entering the required details in the web interface, you can click the "Predict Rent" button to get the predicted rent value. The prediction will be displayed like below.
 
-> Example of the web UI showing rent prediction output.
+> Example of web UI where users enter input to receive real-time predictions.
 > ![app interface](./images/screenshots/app-interface.png)
 
 ## Further Tweaks
