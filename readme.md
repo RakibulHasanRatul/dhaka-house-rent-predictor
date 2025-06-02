@@ -58,7 +58,7 @@ This project embraces several unconventional engineering choices — deliberatel
 
   ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**  
   ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**  
-  🗸 Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).  
+  ✓ Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).  
   ⛌ No `Scikit-learn`, `TensorFlow`, or **other machine learning libraries** at all.
 
   A minimalist [`pyproject.toml`](./pyproject.toml) confirms zero external runtime dependencies.
@@ -114,7 +114,7 @@ For this specific dataset the Scikit-Learn's `LinearRegression` model works noti
 
 My step-by-step procedures and detailed [benchmark test results](./benchmarks.md#benchmark-test-results) are documented in the [benchmarks.md](./benchmarks.md) file.
 
-### Key Observations in Benchmark Results:
+### Key Observations in Benchmark Results
 
 1.  **Negative R Squared Values:**
 
@@ -143,6 +143,14 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
 > The performance analysis shows that the scratch-built linear regression model is not only competitive with Scikit-learn's implementation but also demonstrates a deep understanding of the underlying mechanics of machine learning. The results indicate that the custom implementation can achieve similar or even slightly better performance metrics while being significantly faster for **this specific dataset**.
 >
 > These findings reinforce the model's correctness and accuracy, even without external numerical libraries.
+
+## Location-wise Performance
+
+As shown in the [benchmarks.md](./benchmarks.md) file, prediction for all locations is not as accurate as it should be. So, It will be vital to score each locations based on their performance metrics ($R^2$, MSE, MAE) and use the best performing locations for prediction.
+
+To avoid the readme to be too long, the scoreboard is in the [scoreboard.md](./scoreboard.md) file.
+
+As shown in the [scoreboard.md](./scoreboard.md) file, the model performs best for 'Turag, Dhaka' location. You can see the scoreboard.md file for details.
 
 ## How Does It Work
 
