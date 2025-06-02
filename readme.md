@@ -2,7 +2,9 @@
 
 A machine learning program to predict house rent in different locations in **Dhaka, Bangladesh**.
 
-<img src="./images/banner.jpeg" alt="banner" width="400" >
+<p align="center">
+  <img src="./images/banner.jpeg" alt="banner" width="400" >
+</p>
 
 ## Overview
 
