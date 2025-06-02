@@ -21,6 +21,7 @@ The model also offers surprisingly fast performance, delivering predictions in *
 - [Engineering Against The Odds](#engineering-against-the-odds)
 - [What Makes It Stand Out](#what-makes-it-stand-out)
 - [Performance Analysis Against Scikit-learn](#performance-analysis-against-scikit-learn)
+- [Location-wise Performance](#location-wise-performance)
 - [How Does It Work](#how-does-it-work)
 - [Why I Built Everything from Scratch](#why-i-built-everything-from-scratch)
 - [How to Run](#how-to-run)
