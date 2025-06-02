@@ -1,4 +1,4 @@
-# Dhaka House Rent predictor: A Machine Learning Model Built from Scratch
+# Dhaka House Rent Predictor: A Machine Learning Model Built from Scratch
 
 A machine learning program to predict house rent in different locations in **Dhaka, Bangladesh**.
 
