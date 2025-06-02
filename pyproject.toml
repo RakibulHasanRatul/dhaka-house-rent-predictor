@@ -8,6 +8,7 @@ dependencies = []
 
 [dependency-groups]
 benchmark-test = [
+    "matplotlib>=3.10.3",
     "scikit-learn>=1.6.1",
 ]
 dev = [
