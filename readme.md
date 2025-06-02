@@ -104,8 +104,9 @@ This project embraces several unconventional engineering choices — deliberatel
 
 I ran benchmark tests against Scikit-learn's `LinearRegression` based on 5-fold cross-validation, determining R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). I found that **the custom implementation performs almost identically, and in some instances, even marginally better than the highly optimized Scikit-learn library.** The differences in performance metrics are often in the **decimal places**, highlighting the precision of the from-scratch approach.
 
-For this specific dataset the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model for smaller datasets due to numpy warmup time**. Speedtest results are available in the [speedtest.md](./speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for datasets, and the performance gap may narrow or even reverse with larger datasets. As shown in the [speedtest.md](./speedtest.md), performance of the scratch-built model drops significantly for larger datasets — where Scikit-learn's optimized backend excels.  
-**_Note that the performance characteristics may vary with different datasets and configurations._**
+For this specific dataset the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model for smaller datasets due to numpy warmup time**. Speedtest results are available in the [speedtest.md](./speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for datasets, and the performance gap may narrow or even reverse with larger datasets. As shown in the [speedtest.md](./speedtest.md), performance of the scratch-built model drops significantly for larger datasets — where Scikit-learn's optimized backend excels.
+
+> _Note that the performance characteristics may vary with different datasets and configurations._
 
 My step-by-step procedures and detailed [benchmark test results](./benchmarks.md#benchmark-test-results) are documented in the [benchmarks.md](./benchmarks.md) file.
 
@@ -133,11 +134,11 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
       - MSE (Scratch): `23579784.62581`, MSE (Sklearn): `23579784.59745`
       - MAE (Scratch): `2649.31827`, MAE (Sklearn): `2649.31827`
 
-These findings reinforce the model's correctness and accuracy, even without external numerical libraries.
-
-### Summary of Performance Analysis
-
-The performance analysis shows that the scratch-built linear regression model is not only competitive with Scikit-learn's implementation but also demonstrates a deep understanding of the underlying mechanics of machine learning. The results indicate that the custom implementation can achieve similar or even slightly better performance metrics while being significantly faster for **this specific dataset**.
+> ### Summary of Performance Analysis
+>
+> The performance analysis shows that the scratch-built linear regression model is not only competitive with Scikit-learn's implementation but also demonstrates a deep understanding of the underlying mechanics of machine learning. The results indicate that the custom implementation can achieve similar or even slightly better performance metrics while being significantly faster for **this specific dataset**.
+>
+> These findings reinforce the model's correctness and accuracy, even without external numerical libraries.
 
 ## How Does It Work?
 
@@ -178,9 +179,9 @@ Most machine learning projects rely heavily on pre-built libraries. But I wanted
 
 I initially used `polars` for data and considered `streamlit` for UI, until I realized they pulled in heavy dependencies like `numpy`. So I ditched them. I rewrote the data loading logic using `csv`, built my own matrix operations, and crafted the frontend using pure HTML, Tailwind, and JS — no frameworks, no fluff.
 
-This project wasn’t just about writing code — it was about **deeply learning through deliberate construction.**
-
-This approach aligns with the philosophy of “learning by implementation,” a method inspired by MIT’s approach in courses like 6.036 — where understanding models from the ground up is key to mastering them.
+> This project wasn’t just about writing code — it was about **deeply learning through deliberate construction.**
+>
+> This approach aligns with the philosophy of “learning by implementation,” a method inspired by MIT’s approach in courses like 6.036 — where understanding models from the ground up is key to mastering them.
 
 ## How to Run?
 
