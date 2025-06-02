@@ -57,9 +57,9 @@ This project embraces several unconventional engineering choices — deliberatel
 
   From model training to the web interface and its backend — **everything is built using Python’s standard library only**!
 
-  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**  
-  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**  
-  ✓ Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).  
+  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**
+  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**
+  ✓ Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).
   ⛌ No `Scikit-learn`, `TensorFlow`, or **other machine learning libraries** at all.
 
   A minimalist [`pyproject.toml`](./pyproject.toml) confirms zero external runtime dependencies.
@@ -151,7 +151,9 @@ As shown in the [benchmarks.md](./benchmarks.md) file, prediction for all locati
 
 To avoid the readme to be too long, the scoreboard is in the [scoreboard.md](./scoreboard.md) file.
 
-As shown in the [scoreboard.md](./scoreboard.md) file, the model performs best for 'Turag, Dhaka' location. You can see the scoreboard.md file for details.
+As shown in the [scoreboard.md](./scoreboard.md) file, the model performs best for 'Turag, Dhaka' location. You can see the scoreboard.md file for details.44251
+
+The scoreboard does not indicate that the model is worst performing. It is not about the model or the algorithm, but about trying to fit non-linear data into linear regression model. Maybe a polinomial equation fits the datasets I used. Also, house rental prices does not depends on number of beds, number of washrooms, area in sq. ft. only. There are also some factors what are missing in the featurre matrix. Future case study may include other features as well.
 
 ## How Does It Work
 
@@ -241,8 +243,8 @@ You should see these logs in the terminal when you run the program:
 
 ## Author
 
-[Rakibul Hasan Ratul](https://github.com/RakibulHasanRatul)  
-Independent Developer, Dhaka, Bangladesh  
+[Rakibul Hasan Ratul](https://github.com/RakibulHasanRatul)
+Independent Developer, Dhaka, Bangladesh
 Email: [rakibulhasanratul@proton.me](mailto:rakibulhasanratul@proton.me)
 
 ## License
