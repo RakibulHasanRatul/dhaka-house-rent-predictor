@@ -12,7 +12,7 @@ This project is a simple Python program that predicts house rent at various loca
 
 What's truly surprising is that this scratch-built model performs almost identically to highly optimized Scikit-learn's `LinearRegression` in terms of performance metrics like R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). Check out the detailed analysis in the [Performance Analysis](#performance-analysis-against-scikit-learn) section.
 
-The model also offers surprisingly fast performance, delivering predictions in **under 0.2 seconds for 5332 datasets** using pure Python. In fact, it’s been benchmarked to run **up to 1.9× faster** than Scikit-learn’s implementation on **smaller datasets** just because of _numpy warmup time_, as shown in the [speedtest.md](./speedtest.md) file. **_However, performance significantly drops on larger datasets, where Scikit-learn's optimized implementation clearly outperforms the scratch-built model._**
+The model also offers surprisingly fast performance, able to be trained for delevering predictions in **under 0.2 seconds for 5332 datasets** using pure Python. In fact, it’s been benchmarked (for training and delivering prediction) to run **up to 1.9× faster** than Scikit-learn’s implementation on **smaller datasets** just because of _numpy warmup time_, as shown in the [speedtest.md](./speedtest.md) file. **_However, performance significantly drops on larger datasets, where Scikit-learn's optimized implementation clearly outperforms the scratch-built model._**
 
 > One line summary: Predicts house rent in Dhaka using a fully scratch-built ML pipeline with zero external libraries.
 
@@ -57,9 +57,9 @@ This project embraces several unconventional engineering choices — deliberatel
 
   From model training to the web interface and its backend — **everything is built using Python’s standard library only**!
 
-  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**
-  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**
-  ✓ Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).
+  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**  
+  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**  
+  ✓ Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).  
   ⛌ No `Scikit-learn`, `TensorFlow`, or **other machine learning libraries** at all.
 
   A minimalist [`pyproject.toml`](./pyproject.toml) confirms zero external runtime dependencies.
