@@ -43,13 +43,13 @@ This project embraces several unconventional engineering choices — deliberatel
 
   House rental prices in Dhaka, Bangladesh, often don't follow straightforward mathematical patterns. Instead, they're heavily influenced by the **socio-economic conditions of a specific location**. For example, houses with **identical specifications** can command **2 to 3 times higher rents in affluent areas like Gulshan** compared to Dakshinkhan. This project uses **clever, domain-specific feature engineering** to capture these unique, location-based patterns.
 
-- **Server backend using `http.server`**
+- **Server backend using _http.server_**
 
   While most web applications leverage robust frameworks like `Flask` or `Django`, this project showcases Python's built-in `http.server` module to create a simple, lightweight, and self-contained web server. This keeps the entire stack incredibly lean.
 
 - **Implementation of fundamental matrix calculations**
 
-  Instead of relying on highly optimized external libraries for matrix operations, this project implements core linear algebra algorithms from scratch. This includes **Gaussian Elimination** (or Gauss-Jordan Elimination) for matrix inversion, and standard textbook methods for multiplication and transpose. This provides complete control over the mathematical heart of the model, proving its feasibility while still maintaining suitable performance for the dataset size.
+  Instead of relying on highly optimized external libraries for matrix operations, this project implements core matrix calculation logic for linear regression algorithm from scratch. This includes **Gaussian Elimination** (or Gauss-Jordan Elimination) for matrix inversion, and standard textbook methods for multiplication and transpose. This provides complete control over the mathematical heart of the model, proving its feasibility while still maintaining suitable performance for the dataset size.
 
 ## What Makes It Stand Out
 
@@ -71,6 +71,7 @@ This project embraces several unconventional engineering choices — deliberatel
   [[Code: `app/handler/data/preprocess.py`](./app/handler/data/preprocess.py)]
 
 - **Linear Regression from Scratch**
+  
   The model uses a vector algebra–based linear regression approach for rent prediction. The formula used to determine the weight vector ($\theta$) is:
   $$\theta = (X^T X + \lambda I)^{-1} X^T Y$$
   where:
