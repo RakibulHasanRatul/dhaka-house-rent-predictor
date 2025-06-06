@@ -244,8 +244,8 @@ You should see these logs in the terminal when you run the program:
 
 ## Author
 
-[Rakibul Hasan Ratul](https://github.com/RakibulHasanRatul)
-Independent Developer, Dhaka, Bangladesh
+[Rakibul Hasan Ratul](https://github.com/RakibulHasanRatul)  
+Independent Developer, Dhaka, Bangladesh  
 Email: [rakibulhasanratul@proton.me](mailto:rakibulhasanratul@proton.me)
 
 ## License
