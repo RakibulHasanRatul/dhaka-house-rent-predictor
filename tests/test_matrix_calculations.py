@@ -1,3 +1,5 @@
+# type: ignore
+
 import pytest
 
 from app.model.matrix_calculation import (

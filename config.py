@@ -1,5 +1,5 @@
-DATA_DOWNLOAD_DIR = "data/raw"
-DATA_PROCESSED_DIR = "data/processed"
+DATA_DOWNLOAD_DIR = "downloads/"
+DATA_PROCESSED_DIR = "processed/"
 LOCATION_JSON_DIR = f"{DATA_PROCESSED_DIR}/locations.json"
 TYPES_JSON_DIR = f"{DATA_PROCESSED_DIR}/types.json"
 WEIGHTS_JSON_DIR = f"{DATA_PROCESSED_DIR}/weights.json"
