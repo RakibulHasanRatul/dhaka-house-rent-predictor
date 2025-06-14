@@ -1,16 +1,14 @@
+import os
 import sys
 
-import os
-
 sys.path.insert(0, os.getcwd())
+
+from __common import run_benchmark
 
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
 from app.handler.data.preprocess import preprocess_loaded_data
 from config import FORMATTED_CSV_GIST_URL
-
-from __common import run_benchmark
-
 
 if __name__ == "__main__":
     run_benchmark(

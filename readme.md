@@ -150,8 +150,8 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks/re
 
 ### Summary of Performance Analysis
 
-The performance analysis shows that the scratch-built linear regression model is not only competitive with Scikit-learn's implementation but also demonstrates a deep understanding of the underlying mechanics of machine learning. The results indicate that the custom implementation can achieve similar or even slightly better performance metrics while being significantly faster for **this specific dataset**.  
-These findings reinforce the model's correctness and accuracy, even without external numerical libraries.
+These results confirm the correctness and reliability of the scratch-built model for most locations. While it occasionally underperforms in outlier regions with very few samples, it delivers comparable or better performance to Scikit-learn in the vast majority of scenarios — reinforcing the value of this from-scratch approach as a pedagogical and benchmarking tool.  
+Bar graphs of different performance matrics according to location are available in [`benchmarks/graphs`](./benchmarks/graphs) directory.
 
 ## Location-wise Performance
 

@@ -1,26 +1,24 @@
-import sys
-
 import os
+import sys
 
 sys.path.insert(0, os.getcwd())
 
-from typing import Any
-from collections import defaultdict
 import json
+from collections import defaultdict
+from typing import Any
+
+from __common import run_benchmark
 
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
+from app.helper import construct_features_list
 from app.types import TrainingVector
 from config import (
     DATA_PROCESSED_DIR,
+    FORMATTED_CSV_GIST_URL,
     LOCATION_JSON_DIR,
     TYPES_JSON_DIR,
-    FORMATTED_CSV_GIST_URL,
 )
-
-from app.helper import construct_features_list
-
-from __common import run_benchmark
 
 
 def modified_construct_location_from_area(addr: str) -> str:

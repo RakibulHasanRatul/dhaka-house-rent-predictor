@@ -25,6 +25,12 @@ python benchmarks/scripts/01_benchmark_script.py
 python benchmarks/scripts/02_benchmark_script.py
 ```
 
-## Results
+## Documenting Results
 
 Results are added in [results/](./results/) directory as in markdown files with corresponding names `01_benchmark_results.md` and `02_benchmark_results.md`.
+
+## Creating Bar Plot of Results
+
+I created a bar plot of the results using `matplotlib` library. The bar plot is added in [graphs/](./graphs/) directory as in directories with corresponding names `01_benchmark_results_bar_plot` and `02_benchmark_results_bar_plot`.
+
+The scripts are added into [scripts/](./scripts/) directory, which are [01_create_bar_plot.py](./scripts/01_create_bar_plot.py) and [02_create_bar_plot.py](./scripts/02_create_bar_plot.py).
