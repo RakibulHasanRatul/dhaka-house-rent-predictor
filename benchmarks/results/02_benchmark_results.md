@@ -1,33 +1,5 @@
-# Performance Analysis and Benchmarking Tests
-
-This file only documents my process of benchmark testing. I have performed a benchmark test to compare the performance of the custom scratch implementation of the `RandomForestRegressor` with the one provided by `scikit-learn`. The goal is to ensure that the custom implementation is at least as good as the one from `scikit-learn`, if not better.
-
-## Environment Setup
-
-Before I proceed, I need to install scikit-learn library to perform the benchmark comparison tests. As I'm using uv, I added scikit-learn through uv by running the command:
-
-```bash
-uv add scikit-learn --group benchmark-test # I will surely not add as a standard dependency!
-```
-
-I also changed the `construct_location_from_area` function in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py) to get fair amount of data for running benchmark, although some locations **were skipped** because of not having enough data. The modified function:
-
-```python
-def construct_location_from_area(addr: str) -> str:
-    parts = [part.strip() for part in addr.split(",")]
-    if len(parts) < 2:
-        return addr.title()
-
-    return f"{parts[-2]}, {parts[-1]}".title()
-```
-
-Then I need to write the _python script_ to perform the comparison test. Although not a part of the repo, I will provide the [snippet](#code-snippet) for reference.
-
-I ran that [python script](#code-snippet) and stored the results in a markdown file.
-
-## Benchmark Test Results
-
-🖈 Adabor, Dhaka
+🖈 Adabor, Dhaka  
+Total data points: 156
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.54638|0.54638|23579784.62581|23579784.59745|2649.31827|2649.31827|
@@ -38,7 +10,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Aftab Nagar, Dhaka
+🖈 Aftab Nagar, Dhaka  
+Total data points: 70
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.38192|0.38192|4919409.65062|4919409.38041|1883.95004|1883.94997|
@@ -49,7 +22,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Agargaon, Dhaka
+🖈 Agargaon, Dhaka  
+Total data points: 81
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|-0.00604|-0.00604|14112130.86825|14112131.00545|2947.23414|2947.23416|
@@ -60,76 +34,83 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Badda, Dhaka
+🖈 Badda, Dhaka  
+Total data points: 179
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.79068|0.79068|21742550.31657|21742550.31642|3035.89821|3035.89826|
 |2|0.72039|0.72039|14859387.68636|14859387.69126|2913.1434|2913.1434|
-|3|0.57029|0.57029|22456818.9202|22456818.92923|4025.97246|4025.97246|
+|3|0.57029|0.57029|22456818.9202|22456818.92924|4025.97246|4025.97246|
 |4|0.89215|0.89215|5534911.73781|5534911.73492|1984.56013|1984.56013|
 |5|0.5097|0.5097|40892872.47806|40892872.41958|4427.31434|4427.31432|
 
 ---
 
-🖈 Banani Dohs, Dhaka
+🖈 Banani Dohs, Dhaka  
+Total data points: 19
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|-11.24927|-11.24927|1088823715.54604|1088823721.67477|31132.07687|31132.077|
-|2|0.88232|0.88232|573383886.92671|573383889.84853|18225.70129|18225.70133|
+|1|-11.24927|-11.24927|1088823715.54604|1088823721.67478|31132.07687|31132.077|
+|2|0.88232|0.88232|573383886.92671|573383889.84847|18225.70129|18225.70133|
 |3|-0.09708|-0.09709|847193407.98004|847193430.4706|25028.01001|25028.01026|
-|4|0.3934|0.3934|525720915.43925|525720918.38311|17922.48157|17922.48165|
-|5|0.6581|0.6581|509052528.77925|509052535.47889|20363.38464|20363.38481|
+|4|0.3934|0.3934|525720915.43925|525720918.38314|17922.48157|17922.48165|
+|5|0.6581|0.6581|509052528.77925|509052535.47891|20363.38464|20363.38481|
 
 ---
 
-🖈 Banani, Dhaka
+🖈 Banani, Dhaka  
+Total data points: 65
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.56986|0.56986|3783243023.88897|3783243023.43775|38040.20242|38040.20248|
-|2|-0.22454|-0.22454|1033616667.01644|1033616675.97176|27923.05984|27923.05996|
-|3|0.53677|0.53677|5457222986.10019|5457222955.81304|45791.32978|45791.32961|
-|4|-0.6452|-0.6452|2761786210.07521|2761786183.41416|43470.13092|43470.13075|
-|5|-1.98337|-1.98337|4461822509.7291|4461822516.87999|42500.62869|42500.62872|
+|1|0.56986|0.56986|3783243023.90374|3783243023.43758|38040.20242|38040.20248|
+|2|-0.22454|-0.22454|1033616654.19743|1033616675.97168|27923.05976|27923.05996|
+|3|0.53677|0.53677|5457222979.33506|5457222955.81311|45791.32972|45791.32961|
+|4|-0.6452|-0.6452|2761786217.5375|2761786183.41488|43470.131|43470.13075|
+|5|-1.98337|-1.98337|4461822509.70729|4461822516.87999|42500.62869|42500.62872|
 
 ---
 
-🖈 Banasree, Dhaka
+🖈 Banasree, Dhaka  
+Total data points: 122
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.63859|0.63859|8567912.91128|8567913.02904|1886.93133|1886.93135|
-|2|0.44522|0.44522|36738861.7566|36738861.69549|3571.94761|3571.94761|
-|3|0.65693|0.65693|12857526.63432|12857526.54829|2780.68601|2780.68599|
-|4|0.76372|0.76372|9165197.72659|9165197.8497|2653.69027|2653.6903|
+|1|0.63859|0.63859|8567913.11773|8567913.02904|1886.93136|1886.93135|
+|2|0.44522|0.44522|36738861.65152|36738861.69549|3571.94761|3571.94761|
+|3|0.65693|0.65693|12857526.63374|12857526.54829|2780.68601|2780.68599|
+|4|0.76372|0.76372|9165197.72955|9165197.8497|2653.69027|2653.6903|
 |5|0.72524|0.72524|74230419.84094|74230418.73743|4526.26612|4526.26609|
 
 ---
 
-🖈 Bangshal, Dhaka
+🖈 Bangshal, Dhaka  
 ⛌ Skipping Bangshal, Dhaka (not enough data points: 3)
 
-🖈 Baridhara Dohs, Dhaka
+🖈 Baridhara Dohs, Dhaka  
+Total data points: 39
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.48052|0.48052|333568762.12753|333568769.50524|17004.08896|17004.08917|
-|2|0.65078|0.65078|226278226.26772|226278226.26247|13000.96425|13000.96425|
-|3|0.23649|0.23649|407466351.7722|407466352.4248|17798.27286|17798.27287|
-|4|0.16239|0.16239|681196826.74825|681196825.48283|18174.70695|18174.70694|
-|5|-0.12569|-0.12569|683455628.98818|683455634.67062|19205.55767|19205.55788|
+|1|0.48052|0.48052|333568756.20601|333568769.50525|17004.08876|17004.08917|
+|2|0.65078|0.65078|226278226.26772|226278226.26248|13000.96425|13000.96425|
+|3|0.23649|0.23649|407466353.85746|407466352.42479|17798.27292|17798.27287|
+|4|0.16239|0.16239|681196823.0668|681196825.48284|18174.70691|18174.70694|
+|5|-0.12569|-0.12569|683455624.62969|683455634.67062|19205.55771|19205.55788|
 
 ---
 
-🖈 Baridhara, Dhaka
+🖈 Baridhara, Dhaka  
+Total data points: 198
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.77406|0.77406|6363129547.10016|6363129549.10931|52075.46016|52075.46012|
-|2|0.50016|0.50016|5392157628.13271|5392157607.33538|47418.55649|47418.55632|
-|3|0.81412|0.81412|4341712728.69205|4341712731.6025|37811.69192|37811.69202|
-|4|0.93871|0.93871|4412921536.00067|4412921536.49592|41105.74248|41105.74249|
-|5|0.82372|0.82372|20634944454.24728|20634944459.86212|75271.12069|75271.12071|
+|1|0.77406|0.77406|6363129547.03244|6363129549.10929|52075.46015|52075.46012|
+|2|0.50016|0.50016|5392157611.20374|5392157607.33543|47418.55635|47418.55632|
+|3|0.81412|0.81412|4341712732.47398|4341712731.6023|37811.69203|37811.69202|
+|4|0.93871|0.93871|4412921535.98808|4412921536.4965|41105.74248|41105.74249|
+|5|0.82372|0.82372|20634944442.37379|20634944459.86212|75271.12064|75271.12071|
 
 ---
 
-🖈 Bashabo, Dhaka
+🖈 Bashabo, Dhaka  
+Total data points: 15
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|-0.55052|-0.364|24894470.7643|21899801.53339|4893.54111|4577.13592|
@@ -140,29 +121,32 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Bashundhara R-A, Dhaka
+🖈 Bashundhara R-A, Dhaka  
+Total data points: 333
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.80128|0.80128|387586390.58507|387586390.44879|9986.42174|9986.42174|
-|2|0.86444|0.86444|976221906.4209|976221906.28106|14154.72789|14154.72789|
-|3|0.75072|0.75072|843307703.79992|843307703.76145|9704.07048|9704.07048|
-|4|0.50476|0.50476|83815759.01417|83815758.92046|7537.87782|7537.87781|
-|5|0.22693|0.22693|138343021.20273|138343021.16961|8924.33591|8924.33591|
+|1|0.80128|0.80128|387586390.57537|387586390.44875|9986.42174|9986.42174|
+|2|0.86444|0.86444|976221907.70444|976221906.28095|14154.7279|14154.72789|
+|3|0.75072|0.75072|843307703.64|843307703.76154|9704.07047|9704.07048|
+|4|0.50476|0.50476|83815759.1965|83815758.92046|7537.87783|7537.87781|
+|5|0.22693|0.22693|138343021.20881|138343021.16961|8924.33591|8924.33591|
 
 ---
 
-🖈 Cantonment, Dhaka
+🖈 Cantonment, Dhaka  
+Total data points: 74
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.66766|0.66766|9049805.03158|9049805.03545|2233.24038|2233.24038|
 |2|0.25095|0.25095|16759056.48033|16759056.56809|3635.60737|3635.60738|
 |3|0.07909|0.07909|27050435.71311|27050435.85943|4536.16433|4536.16434|
-|4|0.28024|0.28024|8813376.46316|8813376.37954|2313.64622|2313.6462|
+|4|0.28024|0.28024|8813376.46316|8813376.37953|2313.64622|2313.6462|
 |5|-0.08339|-0.08339|12254493.23456|12254493.23042|2878.17973|2878.17973|
 
 ---
 
-🖈 Dakshin Khan, Dhaka
+🖈 Dakshin Khan, Dhaka  
+Total data points: 346
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.55169|0.55169|7064763.88111|7064763.93301|1855.55409|1855.5541|
@@ -173,24 +157,26 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Demra, Dhaka
+🖈 Demra, Dhaka  
 ⛌ Skipping Demra, Dhaka (not enough data points: 2)
 
-🖈 Dhanmondi, Dhaka
+🖈 Dhanmondi, Dhaka  
+Total data points: 103
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.49478|0.49478|238730154.93293|238730153.94481|14209.4315|14209.43146|
-|2|-0.25771|-0.25771|714992912.44629|714992922.42493|20160.91662|20160.91679|
-|3|-0.50766|-0.50766|342013212.59307|342013213.14637|15275.95956|15275.95957|
+|1|0.49478|0.49478|238730154.92412|238730153.94481|14209.4315|14209.43146|
+|2|-0.25771|-0.25771|714992912.5306|714992922.42497|20160.91662|20160.91679|
+|3|-0.50766|-0.50766|342013212.63878|342013213.14636|15275.95957|15275.95957|
 |4|0.02975|0.02975|39509395315.46074|39509395311.7533|59387.68394|59387.68393|
-|5|0.14412|0.14412|436778494.33977|436778500.17371|16656.76163|16656.76174|
+|5|0.14412|0.14412|436778494.46117|436778500.17365|16656.76163|16656.76174|
 
 ---
 
-🖈 Eskaton, Dhaka
+🖈 Eskaton, Dhaka  
+Total data points: 26
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.34653|0.36494|39312565.77073|38205225.44162|5685.96232|5587.739|
+|1|0.34653|0.36494|39312565.77073|38205225.44161|5685.96232|5587.739|
 |2|0.35206|0.33232|40327670.13742|41556682.37314|5784.6716|5784.11464|
 |3|0.39792|0.36607|32512463.64012|34232266.08944|4230.33|4781.94745|
 |4|0.71117|0.80378|24307980.95713|16514183.95083|4338.41247|3951.30473|
@@ -198,32 +184,35 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Gulshan, Dhaka
+🖈 Gulshan, Dhaka  
+Total data points: 205
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.40731|0.40731|3380879708.53835|3380879699.05523|45318.24296|45318.24284|
-|2|0.71887|0.71887|3412189570.09064|3412189560.79256|43376.8434|43376.84328|
-|3|0.32806|0.32806|5878588432.40562|5878588434.35273|54220.46065|54220.46068|
-|4|0.52072|0.52072|4199485831.65933|4199485823.13735|43018.73956|43018.73952|
-|5|0.49632|0.49632|15198737063.16808|15198737055.45188|61789.89847|61789.89858|
+|1|0.40731|0.40731|3380879708.20329|3380879699.05518|45318.24296|45318.24284|
+|2|0.71887|0.71887|3412189556.03222|3412189560.79282|43376.84322|43376.84328|
+|3|0.32806|0.32806|5878588435.11904|5878588434.35264|54220.46069|54220.46068|
+|4|0.52072|0.52072|4199485832.82838|4199485823.13689|43018.73957|43018.73952|
+|5|0.49632|0.49632|15198737070.89644|15198737055.45174|61789.89836|61789.89858|
 
 ---
 
-🖈 Hatirpool, Dhaka
+🖈 Hatirpool, Dhaka  
 ⛌ Skipping Hatirpool, Dhaka (not enough data points: 7)
 
-🖈 Hazaribag, Dhaka
+🖈 Hazaribag, Dhaka  
+Total data points: 46
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.53676|0.53676|13359543.14256|13359543.26105|2136.37198|2136.37198|
 |2|0.0|0.0|45407.7175|45407.70306|213.09087|213.09083|
 |3|-4.87551|-4.87552|2321191.00867|2321191.71913|566.82264|566.82264|
-|4|-2.2393|-2.2393|93899768.23015|93899767.60107|5945.35787|5945.35785|
+|4|-2.2393|-2.2393|93899768.23015|93899767.60106|5945.35787|5945.35785|
 |5|0.45225|0.45225|22674030.49795|22674030.08948|2904.05422|2904.05418|
 
 ---
 
-🖈 Ibrahimpur, Dhaka
+🖈 Ibrahimpur, Dhaka  
+Total data points: 31
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.19458|0.19458|4295592.43704|4295592.45406|1774.13276|1774.13276|
@@ -234,19 +223,20 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Jatra Bari, Dhaka
+🖈 Jatra Bari, Dhaka  
 ⛌ Skipping Jatra Bari, Dhaka (not enough data points: 1)
 
-🖈 Joar Sahara, Dhaka
+🖈 Joar Sahara, Dhaka  
 ⛌ Skipping Joar Sahara, Dhaka (not enough data points: 9)
 
-🖈 Kachukhet, Dhaka
+🖈 Kachukhet, Dhaka  
 ⛌ Skipping Kachukhet, Dhaka (not enough data points: 1)
 
-🖈 Kafrul, Dhaka
+🖈 Kafrul, Dhaka  
 ⛌ Skipping Kafrul, Dhaka (not enough data points: 4)
 
-🖈 Kalabagan, Dhaka
+🖈 Kalabagan, Dhaka  
+Total data points: 16
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|-0.7534|-0.7534|65849861.22651|65849867.86475|6408.63164|6408.6317|
@@ -257,13 +247,14 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Kalachandpur, Dhaka
+🖈 Kalachandpur, Dhaka  
 ⛌ Skipping Kalachandpur, Dhaka (not enough data points: 7)
 
-🖈 Kathalbagan, Dhaka
+🖈 Kathalbagan, Dhaka  
 ⛌ Skipping Kathalbagan, Dhaka (not enough data points: 5)
 
-🖈 Khilgaon, Dhaka
+🖈 Khilgaon, Dhaka  
+Total data points: 55
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.67041|0.65425|15329848.26744|16081649.29482|2847.78297|3148.05441|
@@ -274,21 +265,23 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Khilkhet, Dhaka
+🖈 Khilkhet, Dhaka  
+Total data points: 55
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.80185|0.80185|9560242.98582|9560242.91884|1958.18831|1958.18831|
-|2|0.13521|0.13521|6543125.04096|6543125.00487|2087.96519|2087.96518|
-|3|0.49376|0.49376|584841853.13077|584841852.73199|7958.4095|7958.40951|
-|4|-0.18329|-0.18329|4268657.8849|4268657.86381|1576.97409|1576.97408|
-|5|0.65747|0.65747|2370841.12852|2370841.13995|1253.94341|1253.94341|
+|1|0.80185|0.80185|9560242.91465|9560242.91884|1958.18831|1958.18831|
+|2|0.13521|0.13521|6543124.98524|6543125.00487|2087.96517|2087.96518|
+|3|0.49376|0.49376|584841853.13077|584841852.732|7958.4095|7958.40951|
+|4|-0.18329|-0.18329|4268657.88602|4268657.86381|1576.97409|1576.97408|
+|5|0.65747|0.65747|2370841.12493|2370841.13995|1253.94341|1253.94341|
 
 ---
 
-🖈 Kuril, Dhaka
+🖈 Kuril, Dhaka  
 ⛌ Skipping Kuril, Dhaka (not enough data points: 3)
 
-🖈 Lalbagh, Dhaka
+🖈 Lalbagh, Dhaka  
+Total data points: 22
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.75096|0.75096|7019821.77577|7019820.68105|2428.84917|2428.84894|
@@ -299,21 +292,23 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Lalmatia, Dhaka
+🖈 Lalmatia, Dhaka  
 ⛌ Skipping Lalmatia, Dhaka (not enough data points: 9)
 
-🖈 Maghbazar, Dhaka
+🖈 Maghbazar, Dhaka  
+Total data points: 36
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.80317|0.80317|14099597.40517|14099597.4217|2231.84057|2231.84057|
-|2|0.31992|0.31992|30256435.57718|30256435.37783|4974.97471|4974.97468|
+|2|0.31992|0.31992|30256435.57718|30256435.37784|4974.97471|4974.97468|
 |3|-0.11165|-0.11165|33258799.21342|33258799.68426|4611.98312|4611.98316|
 |4|0.89213|0.89213|12473651.42289|12473651.47328|2652.99435|2652.99436|
 |5|0.34255|0.34255|24553614.7651|24553615.66997|3006.88684|3006.88688|
 
 ---
 
-🖈 Malibagh, Dhaka
+🖈 Malibagh, Dhaka  
+Total data points: 14
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.87383|0.87383|3816724.73495|3816724.96451|1857.44514|1857.44521|
@@ -324,7 +319,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Mirpur, Dhaka
+🖈 Mirpur, Dhaka  
+Total data points: 996
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.59239|0.59239|34462005.59936|34462005.50448|3077.89981|3077.89981|
@@ -335,7 +331,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Mohakhali Dohs, Dhaka
+🖈 Mohakhali Dohs, Dhaka  
+Total data points: 10
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|-0.51702|-0.49657|2133309706.15588|2104558325.70405|33164.33544|32727.99665|
@@ -346,10 +343,11 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Mohakhali, Dhaka
+🖈 Mohakhali, Dhaka  
 ⛌ Skipping Mohakhali, Dhaka (not enough data points: 4)
 
-🖈 Mohammadpur, Dhaka
+🖈 Mohammadpur, Dhaka  
+Total data points: 306
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.38388|0.38388|63332452.66787|63332452.68352|5631.53488|5631.53488|
@@ -360,7 +358,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Motijheel, Dhaka
+🖈 Motijheel, Dhaka  
+Total data points: 20
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.75624|0.75624|34919148.55863|34919148.14218|5402.14514|5402.14515|
@@ -371,7 +370,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 New Market, Dhaka
+🖈 New Market, Dhaka  
+Total data points: 16
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.78155|0.78155|23349708.29492|23349708.01764|3433.80633|3433.80633|
@@ -382,30 +382,32 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Niketan, Dhaka
+🖈 Niketan, Dhaka  
 ⛌ Skipping Niketan, Dhaka (not enough data points: 8)
 
-🖈 Nikunja, Dhaka
+🖈 Nikunja, Dhaka  
+Total data points: 25
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.99689|0.99689|66141876.97262|66141877.0403|5471.35458|5471.35459|
-|2|0.99097|0.99097|114459079.99403|114459080.5032|5679.29251|5679.29251|
-|3|0.49785|0.49785|923961.70889|923961.74863|866.09087|866.09089|
-|4|-80.53181|-55.85953|997949403.66293|695960683.00935|19234.12408|13102.93159|
-|5|0.60417|0.60417|16213376.67444|16213376.8819|2557.01632|2557.01635|
+|1|0.99689|0.99689|66141876.98779|66141877.0403|5471.35457|5471.35459|
+|2|0.99097|0.99097|114459079.93957|114459080.50326|5679.29251|5679.29251|
+|3|0.49785|0.49785|923961.68997|923961.74863|866.09087|866.09089|
+|4|-73.5983|-55.85953|913083198.2098|695960683.00883|16818.4416|13102.93159|
+|5|0.60417|0.60417|16213376.79156|16213376.8819|2557.01634|2557.01635|
 
 ---
 
-🖈 North Shahjahanpur, Dhaka
+🖈 North Shahjahanpur, Dhaka  
 ⛌ Skipping North Shahjahanpur, Dhaka (not enough data points: 4)
 
-🖈 Paribagh, Dhaka
+🖈 Paribagh, Dhaka  
 ⛌ Skipping Paribagh, Dhaka (not enough data points: 2)
 
-🖈 Pink City, Dhaka
+🖈 Pink City, Dhaka  
 ⛌ Skipping Pink City, Dhaka (not enough data points: 1)
 
-🖈 Rampura, Dhaka
+🖈 Rampura, Dhaka  
+Total data points: 35
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.54784|0.54784|46563668.62829|46563668.00305|3869.68587|3869.68583|
@@ -416,21 +418,23 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Shahbagh, Dhaka
+🖈 Shahbagh, Dhaka  
 ⛌ Skipping Shahbagh, Dhaka (not enough data points: 3)
 
-🖈 Shahjahanpur, Dhaka
+🖈 Shahjahanpur, Dhaka  
+Total data points: 12
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.0|0.0|7811819.75162|7811817.61816|2794.96328|2794.9629|
 |2|-10.35221|-10.35222|25542481.78927|25542485.83926|3573.68741|3573.68758|
 |3|-11.95125|-11.95124|51804982.2063|51804979.20192|7171.34597|7171.34574|
-|4|-1.25971|-1.25971|14123166.94624|14123183.1359|3286.70887|3286.71141|
+|4|-1.25971|-1.25971|14123166.94624|14123183.13589|3286.70887|3286.71141|
 |5|-4.65281|-7.21403|1413202.80126|2053507.9772|895.51641|1013.2887|
 
 ---
 
-🖈 Shantinagar, Dhaka
+🖈 Shantinagar, Dhaka  
+Total data points: 15
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|-0.30036|-0.30036|65017907.57064|65017913.64542|6745.99959|6745.99997|
@@ -441,7 +445,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Shegunbagicha, Dhaka
+🖈 Shegunbagicha, Dhaka  
+Total data points: 17
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.54424|0.54424|7596045.06917|7596044.75004|2303.60536|2303.60534|
@@ -452,7 +457,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Shiddheswari, Dhaka
+🖈 Shiddheswari, Dhaka  
+Total data points: 13
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.43383|0.43383|286625976.98134|286625977.2521|16790.08076|16790.08077|
@@ -463,7 +469,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Shyamoli, Dhaka
+🖈 Shyamoli, Dhaka  
+Total data points: 48
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.89027|0.89027|2987098.18568|2987098.3631|1311.16921|1311.16927|
@@ -474,32 +481,35 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Sutrapur, Dhaka
+🖈 Sutrapur, Dhaka  
+Total data points: 16
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|-6.83762|-6.83762|15675234.74018|15675234.76631|2479.19332|2479.19332|
 |2|0.64418|0.64418|8776932.35882|8776932.42474|2098.72623|2098.72626|
-|3|-2.21292|-2.21292|34271161.86675|34271161.86749|5128.90436|5128.90437|
+|3|-2.21292|-2.21292|34271161.86675|34271161.86748|5128.90436|5128.90437|
 |4|0.62043|0.62043|27413339.45992|27413339.40298|4488.90003|4488.90002|
 |5|0.84457|0.84457|11190654.40081|11190654.02196|2575.10748|2575.10745|
 
 ---
 
-🖈 Taltola, Dhaka
+🖈 Taltola, Dhaka  
 ⛌ Skipping Taltola, Dhaka (not enough data points: 6)
 
-🖈 Tejgaon, Dhaka
+🖈 Tejgaon, Dhaka  
+Total data points: 26
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.44955|0.44955|4535737.43147|4535737.3346|1767.1496|1767.14957|
 |2|0.7953|0.7953|5371280.47713|5371280.50329|1939.58062|1939.58062|
 |3|0.67645|0.67645|17549317.90027|17549318.84859|3615.53517|3615.53506|
 |4|0.84777|0.84777|7465122.0407|7465122.15472|2322.16294|2322.16294|
-|5|0.57693|0.57693|7852227.9122|7852227.87766|2463.30077|2463.30077|
+|5|0.57693|0.57693|7852227.9122|7852227.87765|2463.30077|2463.30077|
 
 ---
 
-🖈 Turag, Dhaka
+🖈 Turag, Dhaka  
+Total data points: 45
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|0.92484|0.92484|3161224.41817|3161224.3868|1363.30748|1363.30748|
@@ -510,7 +520,8 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Uttar Khan, Dhaka
+🖈 Uttar Khan, Dhaka  
+Total data points: 160
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
 |1|-0.03703|0.83885|3215413.65509|499662.11213|1701.86236|484.41205|
@@ -521,125 +532,17 @@ I ran that [python script](#code-snippet) and stored the results in a markdown f
 
 ---
 
-🖈 Uttara, Dhaka
+🖈 Uttara, Dhaka  
+Total data points: 1184
 | Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |
 |---|---|---|---|---|---|---|
-|1|0.77195|0.77195|1634155924.44431|1634155924.59253|16528.68345|16528.68345|
-|2|0.10664|0.10664|178912106.32782|178912106.51609|9981.81856|9981.81856|
-|3|0.7796|0.7796|186766493.46818|186766493.27682|10306.5058|10306.5058|
-|4|0.10572|0.10572|146300267.09515|146300267.04259|9323.41633|9323.41634|
-|5|0.5069|0.5069|287151326.50061|287151326.39419|12392.44804|12392.44803|
+|1|0.77195|0.77195|1634155924.44276|1634155924.59272|16528.68345|16528.68345|
+|2|0.10664|0.10664|178912106.29158|178912106.5161|9981.81856|9981.81856|
+|3|0.7796|0.7796|186766493.47131|186766493.27682|10306.5058|10306.5058|
+|4|0.10572|0.10572|146300267.05431|146300267.04259|9323.41634|9323.41634|
+|5|0.5069|0.5069|287151326.91158|287151326.39418|12392.44805|12392.44803|
 
 ---
 
-🖈 Zafrabad, Dhaka
+🖈 Zafrabad, Dhaka  
 ⛌ Skipping Zafrabad, Dhaka (not enough data points: 3)
-
-## Code Snippet
-
-```python
-from sklearn.linear_model import LinearRegression
-
-from app.handler.data.download import download_csv_from_gist
-from app.handler.data.load import load_csv_data
-from app.handler.data.preprocess import preprocess_loaded_data
-from app.model.linear_regression import get_weight_vector
-from config import FORMATTED_CSV_GIST_URL
-
-
-def r_squared(y_predicted: list[float], y_original: list[float]) -> float:
-    if len(y_original) != len(y_predicted):
-        raise ValueError("Length of predicted and original lists must be the same.")
-
-    y_mean = sum(y_original) / len(y_original)
-
-    ss_total = sum((y - y_mean) ** 2 for y in y_original)
-    if ss_total == 0:
-        # All y values are (almost) the same, R squared value is undefined
-        # treating as 0 for safe reporting
-        return 0.0
-
-    ss_residual = sum(
-        (y_o - float(y_p)) ** 2 for y_o, y_p in zip(y_original, y_predicted)
-    )
-
-    return 1 - (ss_residual / ss_total)
-
-
-def mse(y_predicted: list[float], y_original: list[float]) -> float:
-    return sum(
-        (float(y) - float(y_hat)) ** 2 for y, y_hat in zip(y_original, y_predicted)
-    ) / len(y_original)
-
-
-def mae(y_predicted: list[float], y_original: list[float]) -> float:
-    return sum(
-        abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)
-    ) / len(y_original)
-
-
-def run_benchmark():
-    preprocessed_data = preprocess_loaded_data(
-        load_csv_data(download_csv_from_gist(FORMATTED_CSV_GIST_URL))
-    )
-
-    for location, data in preprocessed_data.items():
-        print(f"\n🖈 {location}  ")
-        x_total = data.feature_vectors
-        y_total = data.labels
-        total = len(x_total)
-
-        if total < 10:
-            print(f"⛌ Skipping {location} (not enough data points: {total})  ")
-            continue
-
-        k = 5 # Number of folds for cross-validation
-        fold_size = total // k
-
-        print(
-            "| Fold | R² (Scratch) | R² (Sklearn) | MSE (Scratch) | MSE (Sklearn) | MAE (Scratch) | MAE (Sklearn) |"
-        )
-        print("|---|---|---|---|---|---|---|")
-
-        for fold in range(k):
-            start = fold * fold_size
-            end = start + fold_size
-
-            x_test = x_total[start:end]
-            y_test = y_total[start:end]
-
-            x_train = x_total[:start] + x_total[end:]
-            y_train = y_total[:start] + y_total[end:]
-
-            weights = get_weight_vector(x_train, y_train)
-
-            sklearn_model = LinearRegression()
-            sklearn_model.fit(x_train, y_train)
-
-            y_pred: list[float] = []
-            for x in x_test:
-                pred = sum(w[0] * xi for w, xi in zip(weights, x))
-                y_pred.append(pred)
-
-            pred_sklearn = sklearn_model.predict(x_test)
-
-            print(
-                "|"
-                + "|".join(["{}"] * 7).format(
-                    fold + 1,
-                    round(r_squared(y_pred, y_test), 5),
-                    round(r_squared((pred_sklearn), y_test), 5),
-                    round(mse(y_pred, y_test), 5),
-                    round(mse(pred_sklearn, y_test), 5),
-                    round(mae(y_pred, y_test), 5),
-                    round(mae(pred_sklearn, y_test), 5),
-                )
-                + "|"
-            )
-
-        print("---")
-
-
-if __name__ == "__main__":
-    run_benchmark()
-```

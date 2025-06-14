@@ -71,7 +71,7 @@ This project embraces several unconventional engineering choices — deliberatel
   [[Code: `app/handler/data/preprocess.py`](./app/handler/data/preprocess.py)]
 
 - **Linear Regression from Scratch**
-  
+
   The model uses a vector algebra–based linear regression approach for rent prediction. The formula used to determine the weight vector ($\theta$) is:
   $$\theta = (X^T X + \lambda I)^{-1} X^T Y$$
   where:
@@ -114,7 +114,7 @@ For this specific dataset the Scikit-Learn's `LinearRegression` model works noti
 
 > _Note that the performance characteristics may vary with different datasets and configurations._
 
-My step-by-step procedures and detailed [benchmark test results](./benchmarks.md#benchmark-test-results) are documented in the [benchmarks.md](./benchmarks.md) file.
+My step-by-step procedures and detailed [benchmark test results](./benchmarks/results/) are documented in the [benchmarks/steps.md](./benchmarks/steps.md) file.
 
 ### Key Observations in Benchmark Results
 
@@ -124,14 +124,14 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
 
 2.  **Occasional Superiority:**
 
-    In several instances, the scratch-built model's metrics are slightly better than Scikit-learn's for a given fold. While these differences are very small, they are consistently observed across different metrics ($R^2$, MSE, MAE) and for certain locations/folds.
+    In several instances, the scratch-built model's metrics are **slightly better** than Scikit-learn's for a given fold. While these differences are very small, they are consistently observed across different metrics ($R^2$, MSE, MAE) and for certain locations/folds.
 
     - **Example (Adabor, Dhaka - Fold 4):**
       - $R^2$ (Scratch): `0.44251`, $R^2$ (Sklearn): `0.44251`
       - MSE (Scratch): `7105196.01991`, MSE (Sklearn): `7105196.0271` (lower MSE is better)
       - MAE (Scratch): `2091.93698`, MAE (Sklearn): `2091.93698` (lower MAE is better)
 
-3.  **Consistency and Similar Performance:**
+3.  **Consistency and Similar Performance in Maximum Locations:**
 
     Across almost all locations and evaluation folds, the $R^2$, MSE, and MAE scores for the scratch-built model are incredibly close to those of the Scikit-learn model. This pattern of near-identical or slightly superior performance is observed consistently across various locations such as Adabor, Mohammadpur, Uttar Khan, and others. The differences are negligible, often within the range of floating-point precision errors. This strongly indicates that the scratch implementation is effectively equivalent to Scikit-learn's optimized version in terms of predictive accuracy.
 
@@ -140,6 +140,14 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks.md
       - MSE (Scratch): `23579784.62581`, MSE (Sklearn): `23579784.59745`
       - MAE (Scratch): `2649.31827`, MAE (Sklearn): `2649.31827`
 
+4.  **Unsatisfactory Performance of Scratch Built Model in Some Locations:**
+    Although it was expected that the scratch-built model would perform well in all locations, it was found that **the model performed unsatisfactorily in some locations**, as shown in the [benchmarks/results/01_benchmark_results.md](./benchmarks/results/01_benchmark_results.md) file. This is because the model was not able to capture the unique characteristics of each location, which significantly drive rent prices in Dhaka. Although, unexpectedly this finding is **much rare** and **just seen in 01_benchmark_results.md file**, the 02_benchmark_results.md file does not show this finding.
+
+    - **Example (Adarsha Para, Uttar Khan, Dhaka - Fold 2):**
+      - $R^2$ (Scratch): `-12.39805`, $R^2$ (Sklearn): `-0.33333`
+      - MSE (Scratch): `2512134.64518`, MSE (Sklearn): `250000.0` (lower MSE is better)
+      - MAE (Scratch): `1524.67526`, MAE (Sklearn): `250.0` (lower MAE is better)
+
 ### Summary of Performance Analysis
 
 The performance analysis shows that the scratch-built linear regression model is not only competitive with Scikit-learn's implementation but also demonstrates a deep understanding of the underlying mechanics of machine learning. The results indicate that the custom implementation can achieve similar or even slightly better performance metrics while being significantly faster for **this specific dataset**.  
@@ -147,13 +155,13 @@ These findings reinforce the model's correctness and accuracy, even without exte
 
 ## Location-wise Performance
 
-As shown in the [benchmarks.md](./benchmarks.md) file, prediction for all locations is not as accurate as it should be. So, It will be vital to score each locations based on their performance metrics ($R^2$, MSE, MAE) and use the best performing locations for prediction.
+As shown in the [benchmarks/results/](./benchmarks/results/) directory, prediction for all locations is not as accurate as it should be. So, It will be vital to score each locations based on their performance metrics ($R^2$, MSE, MAE) and use the best performing locations for prediction.
 
 To avoid the readme to be too long, the scoreboard is in the [scoreboard.md](./scoreboard.md) file.
 
-As shown in the [scoreboard.md](./scoreboard.md) file, the model performs best for 'Turag, Dhaka' location. You can see the scoreboard.md file for details.44251
+As shown in the [scoreboard.md](./scoreboard.md) file, the model performs best for 'Turag, Dhaka' location. You can see the scoreboard.md file for details.
 
-The scoreboard does not indicate that the model is worst performing. It is not about the model or the algorithm, but about trying to fit non-linear data into linear regression model. Maybe a polinomial equation fits the datasets I used. Also, house rental prices does not depends on number of beds, number of washrooms, area in sq. ft. only. There are also some factors what are missing in the featurre matrix. Future case study may include other features as well.
+The scoreboard does not indicate that the model is worst performing. It is not about the model or the algorithm, but about trying to fit non-linear data into linear regression model. Maybe a polinomial equation fits the datasets I used. Also, house rental prices does not depends on number of beds, number of washrooms, area in sq. ft. only. There are also some factors what are missing in the feature matrix. Future case study may include other features as well.
 
 ## How Does It Work
 
