@@ -167,15 +167,15 @@ def create_bar_plot(
     for fold in range(k):
         print("Creating Bar Plot for fold", fold + 1, "...")
         locations = list(scratch_r2_register[fold].keys())
-        fig_width = 36
-        fig_height = 24
+        fig_width = 72
+        fig_height = 48
         figure, axis = plt.subplots(
             nrows=3,
             ncols=1,
             figsize=(fig_width, fig_height),
         )
         figure.suptitle(
-            f"Fold {fold + 1} Comparison: Scratch vs Scikit-learn", fontsize=24
+            f"Fold {fold + 1} Comparison: Scratch vs Scikit-learn", fontsize=32
         )
 
         metrics = [
@@ -210,7 +210,7 @@ def create_bar_plot(
                 [",".join(loc.split(",")[:-1]) for loc in locations],
                 rotation=90,
                 ha="right",
-                fontsize=12,
+                fontsize=20,
             )
             axis[i].tick_params(
                 axis="x",
