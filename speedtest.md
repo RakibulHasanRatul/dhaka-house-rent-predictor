@@ -21,12 +21,12 @@ However, that’s just one side of the story. The scratch implementation is defi
 
 First, I created a Python script to measure the speed of each implementation. I left the code as it is for preprocessing. The current version generates fewer elements in the feature vector for each location.
 
-After running the speed test using the [script](#script-i-used) provided below, I got the following results:
+After running the speed test using the [script](./speedtest_scripts/01_speedtest_with_smaller_datasets.py), I got the following results:
 
 ### 1st Run
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/01_speedtest_with_smaller_datasets.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -42,7 +42,7 @@ Sklearn model took 0.2954 seconds.
 ### 2nd Run
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/01_speedtest_with_smaller_datasets.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -58,7 +58,7 @@ Sklearn model took 0.2826 seconds.
 ### 3rd Run
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/01_speedtest_with_smaller_datasets.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -81,26 +81,12 @@ This indicates that the scratch implementation is approximately 1.9 times faster
 
 However, it's crucial to evaluate the performance of both models on larger datasets as well. Preliminary tests indicate that while the scratch-built model performs admirably on smaller datasets, its performance may degrade with larger datasets. In contrast, scikit-learn's implementation is optimized for scalability and may outperform the scratch model in such scenarios.
 
-So, what I did here is to run the same [script](#script-i-used) but with a small tweak. I changed the `construct_location_from_area` function in the `app/handler/data/preprocess.py`. It ensures larger feature set is created for a specific location. The change I made is:
-
-```python
-def construct_location_from_area(addr: str) -> str:
-    parts = [part.strip() for part in addr.split(",")]
-    if len(parts) < 2:
-        return addr.title()
-
-    level2 = parts[-2]
-    level1 = parts[-1]
-
-    return f"{level2}, {level1}".title()
-```
-
-After changing the function, I ran the same script and got following results:
+So, what I did here is to create a new [script](./speedtest_scripts/02_speedtest_with_modified_preprocessing.py) changing the preprocessing function to generate larger feature set for each location.
 
 ### 1st Run with Larger Datasets
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/02_speedtest_with_modified_preprocessing.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -116,7 +102,7 @@ Sklearn model took 0.1058 seconds.
 ### 2nd Run with Larger Datasets
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/02_speedtest_with_modified_preprocessing.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -132,7 +118,7 @@ Sklearn model took 0.1051 seconds
 ### 3rd Run with Larger Datasets
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/02_speedtest_with_modified_preprocessing.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -153,14 +139,14 @@ In summary, the speed test results indicate that the scratch-built linear regres
 
 ## Further Stresses!
 
-Although I have tested and drew a conclusion, I think a further stress test can be done to see how the scratch-built model performs with larger datasets! To do so, I will change the [script](#script-i-used) a bit. Just changing the `run_speedtest` function will be enough. I shall attach the [modified run_speedtest function](#modified-script-for-stress-test).
+Although I have tested and drew a conclusion, I think a further stress test can be done to see how the scratch-built model performs with larger datasets! To do so, I will create another [script](./speedtest_scripts/03_stress_speed_test.py) to test the speed against full datasets at once.
 
 This will ensure that the scratch-built model is tested against the entire dataset at once, rather than per location. This will give a better understanding of how the scratch-built model performs with larger datasets.
 
 ### 1st Stress Run
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/03_stress_speed_test.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -175,7 +161,7 @@ Sklearn model took 0.0174 seconds.
 ### 2nd Stress Run
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/03_stress_speed_test.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -190,7 +176,7 @@ Sklearn model took 0.0180 seconds.
 ### 3rd Stress Run
 
 ```plaintext
-❯ python speed_test.py
+❯ python speedtest_scripts/03_stress_speed_test.py
 Downloading: █████████████████████████ 100.00% (325679/325679 bytes)
 
 File downloaded to: data/raw/formatted-csv-dhaka-rent-predictor.csv from url: https://gist.githubusercontent.com/RakibulHasanRatul/9101d6c95bbd3800e1c22b68e6462d76/raw/8d1b1cd8356e0a2ad2db205531421a48660eb6ba/formatted-csv-dhaka-rent-predictor.csv
@@ -214,10 +200,18 @@ It’s still surprising how a non-optimized model completes training under 0.2 s
 
 After running 2 speed tests - one with smaller dataset and another with larger dataset - it will be interesting to loop through a range and slice the feature's list for generating different length of datasets and run the speed test for each dataset! I should be using `matplotlib` to plot the speed test results.
 
-To do so, I changed the [`run_speedtest function`](#modified-script-for-speed-plot) once again and plotted the plot. Here's the resulting plot:
+To do so, I wrote another [script](./speedtest_scripts/04_plot_speedtest_graph.py) and plotted the plot at `images/graphs/speed_comparisons/` directory. in this file, three example are added.
 
 > Speed comparison between scratch-built vs scikit-learn Linear Regression across dataset sizes.
-> ![Speed Plot](images/speed_comparison.png)
+
+> 5 fold Cross-Validation
+> ![Speed Plot](images/graphs/speed_comparisons/5_fold_speed_comparison.png)
+
+> 25 fold Cross-Validation
+> ![Speed Plot](images/graphs/speed_comparisons/25_fold_speed_comparison.png)
+
+> 50 fold Cross-Validation
+> ![Speed Plot](images/graphs/speed_comparisons/50_fold_speed_comparison.png)
 
 ### Conclusion of Speed Plot!
 
@@ -228,348 +222,3 @@ This effect is likely due to `NumPy`’s **JIT-related optimizations kicking in 
 In conclusion, the scratch-built model is well-suited for small datasets and constrained environments where external dependencies or system resources are limited. And **without optimizations, it still can be trained through 32,500 datasets in under 1 second**.
 
 That’s a huge win — and a solid demonstration of what even non-optimized models can achieve.
-
-## Script I Used
-
-The python script I used for the speed test is as follows:
-
-```python
-from sklearn.linear_model import LinearRegression
-import timeit
-from app.handler.data.download import download_csv_from_gist
-from app.handler.data.load import load_csv_data
-from app.handler.data.preprocess import preprocess_loaded_data
-from app.model.linear_regression import get_weight_vector
-from config import FORMATTED_CSV_GIST_URL
-
-
-def r_squared(y_predicted: list[float], y_original: list[float]) -> float:
-    if len(y_original) != len(y_predicted):
-        raise ValueError("Length of predicted and original lists must be the same.")
-
-    y_mean = sum(y_original) / len(y_original)
-
-    ss_total = sum((y - y_mean) ** 2 for y in y_original)
-    if ss_total == 0:
-        # All y values are (almost) the same, R squared value is undefined
-        # treating as 0 for safe reporting
-        return 0.0
-
-    ss_residual = sum(
-        (y_o - float(y_p)) ** 2 for y_o, y_p in zip(y_original, y_predicted)
-    )
-
-    return 1 - (ss_residual / ss_total)
-
-
-def mse(y_predicted: list[float], y_original: list[float]) -> float:
-    return sum(
-        (float(y) - float(y_hat)) ** 2 for y, y_hat in zip(y_original, y_predicted)
-    ) / len(y_original)
-
-
-def mae(y_predicted: list[float], y_original: list[float]) -> float:
-    return sum(
-        abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)
-    ) / len(y_original)
-
-
-def run_speedtest():
-    preprocessed_data = preprocess_loaded_data(
-        load_csv_data(download_csv_from_gist(FORMATTED_CSV_GIST_URL))
-    )
-
-    locations = list(preprocessed_data.keys())
-
-    work_on_location = [
-        location
-        for location in locations
-        if len(preprocessed_data[location].feature_vectors) >= 10
-    ]
-
-    print("Working on {} locations.".format(len(work_on_location)))
-    print(
-        "Skipped {} locations due to insufficient data.".format(
-            len(locations) - len(work_on_location)
-        )
-    )
-
-    def run_scratch_built_model():
-        for location in work_on_location:
-            data = preprocessed_data[location]
-
-            x_total = data.feature_vectors
-            y_total = data.labels
-            total = len(x_total)
-
-            k = 5
-            fold_size = total // k
-
-            for fold in range(k):
-                start = fold * fold_size
-                end = start + fold_size
-
-                x_test = x_total[start:end]
-                y_test = y_total[start:end]
-
-                x_train = x_total[:start] + x_total[end:]
-                y_train = y_total[:start] + y_total[end:]
-
-                weights = get_weight_vector(x_train, y_train)
-
-                y_pred: list[float] = []
-                for x in x_test:
-                    pred = sum(w[0] * xi for w, xi in zip(weights, x))
-                    y_pred.append(pred)
-
-                r_squared(y_pred, y_test)
-                mse(y_pred, y_test)
-                mae(y_pred, y_test)
-
-    def run_sklearn_model():
-        for location in work_on_location:
-            data = preprocessed_data[location]
-
-            x_total = data.feature_vectors
-            y_total = data.labels
-            total = len(x_total)
-
-            k = 5
-            fold_size = total // k
-
-            for fold in range(k):
-                start = fold * fold_size
-                end = start + fold_size
-
-                x_test = x_total[start:end]
-                y_test = y_total[start:end]
-
-                x_train = x_total[:start] + x_total[end:]
-                y_train = y_total[:start] + y_total[end:]
-
-                model = LinearRegression()
-                model.fit(x_train, y_train)
-
-                y_pred: list[float] = model.predict(x_test).tolist()
-
-                r_squared(y_pred, y_test)
-                mse(y_pred, y_test)
-                mae(y_pred, y_test)
-
-    print("Running scratch-built model...")
-    scratch_time = timeit.timeit(run_scratch_built_model, number=1)
-    print(f"Scratch-built model took {scratch_time:.4f} seconds.")
-    print("Running sklearn model...")
-    sklearn_time = timeit.timeit(run_sklearn_model, number=1)
-    print(f"Sklearn model took {sklearn_time:.4f} seconds.")
-
-
-if __name__ == "__main__":
-    run_speedtest()
-```
-
-## Modified Script for Stress Test
-
-```python
-def run_speedtest():
-    preprocessed_data = preprocess_loaded_data(
-        load_csv_data(download_csv_from_gist(FORMATTED_CSV_GIST_URL))
-    )
-
-    work_on_location = list(preprocessed_data.keys())
-
-    x_total: list[list[float]] = []
-    y_total: list[float] = []
-    for location in work_on_location:
-        x_total = x_total + preprocessed_data[location].feature_vectors
-        y_total = y_total + preprocessed_data[location].labels
-
-    dataset_len = len(x_total)
-
-    print("Working on {} dataset.".format(dataset_len))
-
-    def run_scratch_built_model():
-        k = 5
-        fold_size = dataset_len // k
-
-        for fold in range(k):
-            start = fold * fold_size
-            end = start + fold_size
-
-            x_test = x_total[start:end]
-            y_test = y_total[start:end]
-
-            x_train = x_total[:start] + x_total[end:]
-            y_train = y_total[:start] + y_total[end:]
-
-            weights = get_weight_vector(x_train, y_train)
-
-            y_pred: list[float] = []
-            for x in x_test:
-                pred = sum(w[0] * xi for w, xi in zip(weights, x))
-                y_pred.append(pred)
-
-            r_squared(y_pred, y_test)
-            mse(y_pred, y_test)
-            mae(y_pred, y_test)
-
-    def run_sklearn_model():
-        k = 5
-        fold_size = dataset_len // k
-
-        for fold in range(k):
-            start = fold * fold_size
-            end = start + fold_size
-
-            x_test = x_total[start:end]
-            y_test = y_total[start:end]
-
-            x_train = x_total[:start] + x_total[end:]
-            y_train = y_total[:start] + y_total[end:]
-
-            model = LinearRegression()
-            model.fit(x_train, y_train)
-
-            y_pred: list[float] = model.predict(x_test).tolist()
-
-            r_squared(y_pred, y_test)
-            mse(y_pred, y_test)
-            mae(y_pred, y_test)
-
-    print("Running scratch-built model...")
-    scratch_time = timeit.timeit(run_scratch_built_model, number=1)
-    print(f"Scratch-built model took {scratch_time:.4f} seconds.")
-    print("Running sklearn model...")
-    sklearn_time = timeit.timeit(run_sklearn_model, number=1)
-    print(f"Sklearn model took {sklearn_time:.4f} seconds.")
-
-```
-
-## Modified Script for Speed Plot
-
-```python
-def run_speedtest():
-    preprocessed_data = preprocess_loaded_data(
-        load_csv_data(download_csv_from_gist(FORMATTED_CSV_GIST_URL))
-    )
-
-    locations = list(preprocessed_data.keys())
-
-    x_total: list[list[float]] = []
-    y_total: list[float] = []
-
-    for location in locations:
-        x_total = x_total + preprocessed_data[location].feature_vectors
-        y_total = y_total + preprocessed_data[location].labels
-
-    dataset_len_total = len(x_total)
-
-    used_dataset_lengths: list[int] = []
-    scratch_built_times: list[float] = []
-    sklearn_times: list[float] = []
-
-    def run_scratch_built_model(
-        dataset_len: int, feature_vector: list[list[float]], label_vector: list[float]
-    ):
-        number_of_folds = 5
-        fold_size = dataset_len // number_of_folds
-
-        for fold in range(number_of_folds):
-            start = fold * fold_size
-            end = start + fold_size
-
-            x_test = feature_vector[start:end]
-            y_test = label_vector[start:end]
-
-            x_train = feature_vector[:start] + feature_vector[end:]
-            y_train = label_vector[:start] + label_vector[end:]
-
-            weights = get_weight_vector(x_train, y_train)
-
-            y_pred: list[float] = []
-            for x in x_test:
-                pred = sum(w[0] * xi for w, xi in zip(weights, x))
-                y_pred.append(pred)
-
-            r_squared(y_pred, y_test)
-            mse(y_pred, y_test)
-            mae(y_pred, y_test)
-
-    def run_sklearn_model(
-        dataset_len: int, feature_vector: list[list[float]], label_vector: list[float]
-    ):
-        number_of_folds = 5
-        fold_size = dataset_len // number_of_folds
-
-        for fold in range(number_of_folds):
-            start = fold * fold_size
-            end = start + fold_size
-
-            x_test = feature_vector[start:end]
-            y_test = label_vector[start:end]
-
-            x_train = feature_vector[:start] + feature_vector[end:]
-            y_train = label_vector[:start] + label_vector[end:]
-
-            model = LinearRegression()
-            model.fit(x_train, y_train)
-
-            y_pred: list[float] = model.predict(x_test).tolist()
-
-            r_squared(y_pred, y_test)
-            mse(y_pred, y_test)
-            mae(y_pred, y_test)
-
-    dataset_len = 100
-    while True:
-        # yea, I could use conditions like dataset_len <= dataset_len_total,
-        # but I want to use the full datasets
-        print("Working on {} dataset.".format(dataset_len))
-        print("Running scratch-built model with {} dataset...".format(dataset_len))
-        scratch_time = timeit.timeit(
-            lambda: run_scratch_built_model(
-                dataset_len, x_total[:dataset_len], y_total[:dataset_len]
-            ),
-            number=1,
-        )
-        print(f"Scratch-built model took {scratch_time:.4f} seconds.")
-        print("Running sklearn model with {} dataset...".format(dataset_len))
-        sklearn_time = timeit.timeit(
-            lambda: run_sklearn_model(
-                dataset_len, x_total[:dataset_len], y_total[:dataset_len]
-            ),
-            number=1,
-        )
-        print(f"Sklearn model took {sklearn_time:.4f} seconds.")
-
-        used_dataset_lengths.append(dataset_len)
-        scratch_built_times.append(scratch_time)
-        sklearn_times.append(sklearn_time)
-
-        if dataset_len == dataset_len_total:
-            break
-
-        dataset_len += 100
-
-        if dataset_len > dataset_len_total:
-            dataset_len = dataset_len_total
-
-    plt.style.use("dark_background")  # jsut because I like dark themes a lot!
-    plt.figure(figsize=(16, 9))
-    plt.plot(
-        used_dataset_lengths,
-        scratch_built_times,
-        label="Scratch-built model",
-    )
-    plt.plot(
-        used_dataset_lengths,
-        sklearn_times,
-        label="scikit-learn model",
-    )
-    plt.xlabel("Dataset Length")
-    plt.ylabel("Time (seconds)")
-    plt.title("Speed Comparison of Linear Regression Models")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig("images/speed_comparison.png", dpi=250)
-```

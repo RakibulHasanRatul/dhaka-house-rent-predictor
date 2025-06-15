@@ -110,7 +110,7 @@ This project embraces several unconventional engineering choices — deliberatel
 
 I ran benchmark tests against Scikit-learn's `LinearRegression` based on 5-fold cross-validation, determining R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). I found that **the custom implementation performs almost identically, and in some instances, even marginally better than the highly optimized Scikit-learn library.** The differences in performance metrics are often in the **decimal places**, highlighting the precision of the from-scratch approach.
 
-For this specific dataset the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times slower than my scratch-built model for smaller datasets due to numpy warmup time**. Speedtest results are available in the [speedtest.md](./speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for datasets, and the performance gap may narrow or even reverse with larger datasets. As shown in the [speedtest.md](./speedtest.md), performance of the scratch-built model drops significantly for larger datasets — where Scikit-learn's optimized backend excels.
+For this specific dataset the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times** slower than my scratch-built model **for smaller datasets due to numpy warmup time**. Speedtest results are available in the [speedtest.md](./speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for datasets, and the performance gap may narrow or even reverse with larger datasets. As shown in the [speedtest.md](./speedtest.md), performance of the scratch-built model drops significantly for larger datasets — where Scikit-learn's optimized backend excels.
 
 > _Note that the performance characteristics may vary with different datasets and configurations._
 
@@ -147,6 +147,12 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks/re
       - $R^2$ (Scratch): `-12.39805`, $R^2$ (Sklearn): `-0.33333`
       - MSE (Scratch): `2512134.64518`, MSE (Sklearn): `250000.0` (lower MSE is better)
       - MAE (Scratch): `1524.67526`, MAE (Sklearn): `250.0` (lower MAE is better)
+
+### Speed Test Graph after Numpy Got Initialized
+
+Although _numpy warmup time_ is a factor why sklearn's implementation is slower than the scratch-built model for small datasets, sklearn's implementation shows its strengths once numpy is initialized. For instance, 5 fold Cross Validation stress test graph is attached below.
+
+![5 fold Cross Validation stress test graph](./images/graphs/speed_comparisons/5_fold_speed_comparison.png)
 
 ### Summary of Performance Analysis
 

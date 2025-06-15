@@ -8,25 +8,11 @@ While the program results refined for some locations, it is not as accurate as i
 
 Why? $R^2$ value ranges up to 1, and 10 times of it ranges up to 10. Certainly, as the $R^2$ value increases, the MSE and MAE (error values) also decreases.
 
-_The [code snippet](#code-snippet) is of course attached below, right after the scoreboard for reference._
+However, for ensuring fair test, I provided two scoreboards. [**Scoreboard 01**](#scoreboard-01) is by using the `modified_preprocess_loaded_data` function defined in [benchmarks/scripts/\_\_common.py](./benchmarks/scripts/__common.py). The script is in the [scoreboard_scripts/01_generate_scoreboard.py](./scoreboard_scripts/01_generate_scoreboard.py).
 
-However, for ensuring fair test, I provided two scoreboards. [**Scoreboard 1**](#scoreboard-1) is after a slight change in the `construct_location_from_area` function in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py). The change is that it will not consider the level3 location in the location string. The changed function:
+And, [**Scoreboard 02**](#scoreboard-02) represents the original `construct_location_from_area` function defined in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py). The script is in the [scoreboard_scripts/02_generate_scoreboard.py](./scoreboard_scripts/02_generate_scoreboard.py).
 
-```python
-def construct_location_from_area(addr: str) -> str:
-    parts = [part.strip() for part in addr.split(",")]
-    if len(parts) < 2:
-        return addr.title()
-
-    level2 = parts[-2]
-    level1 = parts[-1]
-
-    return f"{level2}, {level1}".title()
-```
-
-However, [**Scoreboard 2**](#scoreboard-2) represents the original `construct_location_from_area` function.
-
-## Scoreboard 1
+## Scoreboard 01
 
 | Location               | Score   |
 | ---------------------- | ------- |
@@ -96,7 +82,7 @@ However, [**Scoreboard 2**](#scoreboard-2) represents the original `construct_lo
 | Shahbagh, Dhaka           | N/A   |
 | Zafrabad, Dhaka           | N/A   |
 
-## Scoreboard 2
+## Scoreboard 02
 
 | Location                                       | Score       |
 | ---------------------------------------------- | ----------- |
@@ -379,83 +365,3 @@ However, [**Scoreboard 2**](#scoreboard-2) represents the original `construct_lo
 | West Monipur, Mirpur, Dhaka             | N/A   |
 | Zafrabad, Dhaka                         | N/A   |
 | Zafrabad, Hazaribag, Dhaka              | N/A   |
-
-## Code Snippet
-
-```python
-from app.handler.data.download import download_csv_from_gist
-from app.handler.data.load import load_csv_data
-from app.handler.data.preprocess import preprocess_loaded_data
-from app.model.linear_regression import get_weight_vector
-from config import FORMATTED_CSV_GIST_URL
-
-
-def r_squared(y_predicted: list[float], y_original: list[float]) -> float:
-    if len(y_original) != len(y_predicted):
-        raise ValueError("Length of predicted and original lists must be the same.")
-
-    y_mean = sum(y_original) / len(y_original)
-
-    ss_total = sum((y - y_mean) ** 2 for y in y_original)
-    if ss_total == 0:
-        # All y values are (almost) the same, R squared value is undefined
-        # treating as 0 for safe reporting
-        return 0.0
-
-    ss_residual = sum(
-        (y_o - float(y_p)) ** 2 for y_o, y_p in zip(y_original, y_predicted)
-    )
-
-    return 1 - (ss_residual / ss_total)
-
-
-def generate_scoreboard():
-    preprocessed_data = preprocess_loaded_data(
-        load_csv_data(download_csv_from_gist(FORMATTED_CSV_GIST_URL))
-    )
-
-    scoreboard: dict[str, float] = {}
-
-    for location, data in preprocessed_data.items():
-        x_total = data.feature_vectors
-        y_total = data.labels
-        total = len(x_total)
-
-        if total >= 5:
-            slice = total // 5
-
-            x_test = x_total[:slice]
-            y_test = y_total[:slice]
-
-            x_train = x_total[slice:]
-            y_train = y_total[slice:]
-
-            weights = get_weight_vector(x_train, y_train)
-
-            y_pred: list[float] = []
-            for x in x_test:
-                pred = sum(w[0] * xi for w, xi in zip(weights, x))
-                y_pred.append(pred)
-
-            scoreboard[location] = round(r_squared(y_pred, y_test) * 10, 2)
-
-        else:
-            scoreboard[location] = -1_000_000_000_000.00
-            # ensuring the least value possible!
-
-    print("| Location | Score |")
-    print("| --- | --- |")
-
-    locations = list(scoreboard.keys())
-
-    locations = sorted(locations, key=lambda x: scoreboard[x], reverse=True)
-
-    for location in locations:
-        print(
-            f"| {location} | {scoreboard[location] if scoreboard[location] != -1_000_000_000_000.00 else 'N/A'} |"
-        )
-
-
-if __name__ == "__main__":
-    generate_scoreboard()
-```
