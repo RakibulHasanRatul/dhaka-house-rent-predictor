@@ -1,14 +1,16 @@
-# type: ignore
-
+import json
 import os
 from collections import defaultdict
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression  # type:ignore
 
+from app.helper import construct_features_list
 from app.model.linear_regression import get_weight_vector
 from app.types import TrainingVector
+from config import DATA_PROCESSED_DIR, LOCATION_JSON_DIR, TYPES_JSON_DIR
 
 
 def r_squared(y_predicted: list[float], y_original: list[float]) -> float:
@@ -40,6 +42,57 @@ def mae(y_predicted: list[float], y_original: list[float]) -> float:
     return sum(
         abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)
     ) / len(y_original)
+
+
+def modified_construct_location_from_area(addr: str) -> str:
+    parts = [part.strip() for part in addr.split(",")]
+    if len(parts) < 2:
+        return addr.title()
+
+    return f"{parts[-2]}, {parts[-1]}".title()
+
+
+def modified_preprocess_loaded_data(
+    data: dict[str, list[Any]],
+) -> dict[str, TrainingVector]:
+    house_types = sorted({str(cell).strip() for cell in data["type"]})
+    os.makedirs(DATA_PROCESSED_DIR, exist_ok=True)
+    with open(TYPES_JSON_DIR, "w") as f:
+        json.dump({"types": list(house_types)}, f)
+
+    data["type_num"] = [house_types.index(str(cell).strip()) for cell in data["type"]]
+    del data["type"]
+
+    data["location"] = [
+        modified_construct_location_from_area(str(cell)) for cell in data["address"]
+    ]
+    del data["address"]
+
+    locations = sorted({str(cell) for cell in data["location"]})
+    with open(LOCATION_JSON_DIR, "w") as f:
+        json.dump({"locations": list(locations)}, f)
+
+    rents: dict[str, list[float]] = defaultdict(list[float])
+    features: dict[str, list[list[float]]] = defaultdict(list[list[float]])
+
+    for i, location in enumerate(data["location"]):
+        feature_set = [1.0] + construct_features_list(
+            beds=float(data["beds"][i]),
+            bath=float(data["bath"][i]),
+            area=float(data["area"][i]),
+            type_num=float(data["type_num"][i]),
+            year=float(data["year"][i]),
+        )
+        features[location].append(feature_set)
+        rents[location].append(float(data["rent"][i]))
+
+    training_dataset: dict[str, TrainingVector] = {}
+    for location in locations:
+        training_dataset[location] = TrainingVector(
+            feature_vectors=features[location], labels=rents[location]
+        )
+
+    return training_dataset
 
 
 def run_benchmark(preprocessed_data: dict[str, TrainingVector]):
@@ -76,25 +129,25 @@ def run_benchmark(preprocessed_data: dict[str, TrainingVector]):
             weights = get_weight_vector(x_train, y_train)
 
             sklearn_model = LinearRegression()
-            sklearn_model.fit(x_train, y_train)
+            sklearn_model.fit(x_train, y_train)  # type:ignore
 
             y_pred: list[float] = []
             for x in x_test:
                 pred = sum(w[0] * xi for w, xi in zip(weights, x))
                 y_pred.append(pred)
 
-            pred_sklearn = sklearn_model.predict(x_test)
+            pred_sklearn = sklearn_model.predict(x_test)  # type:ignore
 
             print(
                 "|"
                 + "|".join(["{}"] * 7).format(
                     fold + 1,
                     round(r_squared(y_pred, y_test), 5),
-                    round(r_squared((pred_sklearn), y_test), 5),
+                    round(r_squared((pred_sklearn), y_test), 5),  # type:ignore
                     round(mse(y_pred, y_test), 5),
-                    round(mse(pred_sklearn, y_test), 5),
+                    round(mse(pred_sklearn, y_test), 5),  # type:ignore
                     round(mae(y_pred, y_test), 5),
-                    round(mae(pred_sklearn, y_test), 5),
+                    round(mae(pred_sklearn, y_test), 5),  # type:ignore
                 )
                 + "|"
             )
@@ -136,32 +189,32 @@ def create_bar_plot(
             weights = get_weight_vector(x_train, y_train)
 
             sklearn_model = LinearRegression()
-            sklearn_model.fit(x_train, y_train)
+            sklearn_model.fit(x_train, y_train)  # type:ignore
 
             scratch_prediction: list[float] = []
             for x in x_test:
                 pred = sum(w[0] * xi for w, xi in zip(weights, x))
                 scratch_prediction.append(pred)
 
-            sklearn_prediction = sklearn_model.predict(x_test)
+            sklearn_prediction = sklearn_model.predict(x_test)  # type:ignore
 
             scratch_r2_register[fold].update(
                 {location: r_squared(scratch_prediction, y_test)}
             )
             sklearn_r2_register[fold].update(
-                {location: r_squared(sklearn_prediction, y_test)}
+                {location: r_squared(sklearn_prediction, y_test)}  # type:ignore
             )
             scratch_mse_register[fold].update(
                 {location: mse(scratch_prediction, y_test)}
             )
             sklearn_mse_register[fold].update(
-                {location: mse(sklearn_prediction, y_test)}
+                {location: mse(sklearn_prediction, y_test)}  # type:ignore
             )
             scratch_mae_register[fold].update(
                 {location: mae(scratch_prediction, y_test)}
             )
             sklearn_mae_register[fold].update(
-                {location: mae(sklearn_prediction, y_test)}
+                {location: mae(sklearn_prediction, y_test)}  # type:ignore
             )
 
     for fold in range(k):
@@ -169,12 +222,12 @@ def create_bar_plot(
         locations = list(scratch_r2_register[fold].keys())
         fig_width = 72
         fig_height = 48
-        figure, axis = plt.subplots(
+        figure, axis = plt.subplots(  # type:ignore
             nrows=3,
             ncols=1,
             figsize=(fig_width, fig_height),
         )
-        figure.suptitle(
+        figure.suptitle(  # type:ignore
             f"Fold {fold + 1} Comparison: Scratch vs Scikit-learn", fontsize=32
         )
 
@@ -262,7 +315,7 @@ def create_bar_plot(
                             ),
                         )
 
-        plt.tight_layout(rect=[0, 0.3, 1, 0.95], h_pad=5.0, w_pad=0.0)
+        plt.tight_layout(rect=[0, 0.3, 1, 0.95], h_pad=5.0, w_pad=0.0)  # type:ignore
         plt.subplots_adjust(
             left=0.05,
             right=0.95,
@@ -271,7 +324,7 @@ def create_bar_plot(
             hspace=2,
         )
         os.makedirs(abs_graphs_dir, exist_ok=True)
-        plt.savefig(
+        plt.savefig(  # type:ignore
             os.path.join(
                 abs_graphs_dir,
                 f"{prefix + ' ' if prefix else ''}fold_{fold + 1}_comparison.png",

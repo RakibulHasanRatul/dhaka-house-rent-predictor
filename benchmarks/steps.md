@@ -31,6 +31,13 @@ Results are added in [results/](./results/) directory as in markdown files with 
 
 ## Creating Bar Plot of Results
 
-I created a bar plot of the results using `matplotlib` library. The bar plot is added in [graphs/](./graphs/) directory as in directories with corresponding names `01_benchmark_results_bar_plot` and `02_benchmark_results_bar_plot`.
+I created a bar plot of the results using `matplotlib` library. The bar plot is added in [images/graphs/](./images/graphs/) directory as in directories with corresponding names `01_benchmark_results_bar_plot` and `02_benchmark_results_bar_plot`.
 
 The scripts are added into [scripts/](./scripts/) directory, which are [01_create_bar_plot.py](./scripts/01_create_bar_plot.py) and [02_create_bar_plot.py](./scripts/02_create_bar_plot.py).
+
+I generated the bar plot by running the commands:
+
+```bash
+python benchmarks/scripts/01_create_bar_plot.py
+python benchmarks/scripts/02_create_bar_plot.py
+```

@@ -16,7 +16,7 @@ if __name__ == "__main__":
             load_csv_data(download_csv_from_gist(FORMATTED_CSV_GIST_URL))
         ),
         abs_graphs_dir=os.path.join(
-            os.getcwd(), "benchmarks/graphs/01_benchmark_results_bar_plot/"
+            os.getcwd(), "images/graphs/01_benchmark_results_bar_plot/"
         ),
         prefix="[01]",
     )
