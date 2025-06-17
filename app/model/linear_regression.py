@@ -17,11 +17,10 @@ def model_train(
     xt = transpose(x)
     xtx = matrix_mul(xt, x)
 
-    xtx_reg = [
-        [xtx[i][j] + (lambda_l2 if i == j else 0) for j in range(len(xtx[0]))]
-        for i in range(len(xtx))
-    ]
+    # regularize
+    for r in range(len(xtx[0])):
+        xtx[r][r] += lambda_l2
 
-    xtx_inv = inverse(xtx_reg)
+    xtx_inv = inverse(xtx)
     xtx_inv_xt = matrix_mul(xtx_inv, xt)
     return matrix_mul(xtx_inv_xt, y)
