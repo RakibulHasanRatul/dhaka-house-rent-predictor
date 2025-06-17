@@ -7,7 +7,7 @@ from sklearn.linear_model import LinearRegression  # type:ignore
 import timeit
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
-from app.model.linear_regression import get_weight_vector
+from app.model.linear_regression import model_train
 from config import FORMATTED_CSV_GIST_URL
 from benchmarks.scripts.__common import (
     r_squared,
@@ -57,7 +57,7 @@ def run_speedtest_and_plot_graph():
             x_train = feature_vector[:start] + feature_vector[end:]
             y_train = label_vector[:start] + label_vector[end:]
 
-            weights = get_weight_vector(x_train, y_train)
+            weights = model_train(x_train, y_train)
 
             y_pred: list[float] = []
             for x in x_test:
@@ -107,9 +107,7 @@ def run_speedtest_and_plot_graph():
         print(f"Scratch-built model took {scratch_time:.4f} seconds.")
         print("Running sklearn model with {} dataset...".format(dataset_len))
         sklearn_time = timeit.timeit(
-            lambda: run_sklearn_model(
-                dataset_len, x_total[:dataset_len], y_total[:dataset_len]
-            ),
+            lambda: run_sklearn_model(dataset_len, x_total[:dataset_len], y_total[:dataset_len]),
             number=1,
         )
         print(f"Sklearn model took {sklearn_time:.4f} seconds.")
@@ -144,9 +142,7 @@ def run_speedtest_and_plot_graph():
     plt.grid(True)  # type:ignore
     plt.legend()  # type:ignore
     plt.tight_layout()  # type:ignore
-    os.makedirs(
-        os.path.join(os.getcwd(), "images/graphs/speed_comparisons"), exist_ok=True
-    )
+    os.makedirs(os.path.join(os.getcwd(), "images/graphs/speed_comparisons"), exist_ok=True)
     plt.savefig(  # type:ignore
         f"images/graphs/speed_comparisons/{NUMBER_OF_FOLDS}_fold_speed_comparison.png",
         dpi=300,

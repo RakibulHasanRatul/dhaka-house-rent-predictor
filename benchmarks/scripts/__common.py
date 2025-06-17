@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression  # type:ignore
 
 from app.helper import construct_features_list
-from app.model.linear_regression import get_weight_vector
+from app.model.linear_regression import model_train
 from app.types import TrainingVector
 from config import DATA_PROCESSED_DIR, LOCATION_JSON_DIR, TYPES_JSON_DIR
 
@@ -41,18 +41,18 @@ def mse(y_predicted: list[float], y_original: list[float]) -> float:
     if len(y_original) != len(y_predicted):
         raise ValueError("Length of predicted and original lists must be the same.")
 
-    return sum(
-        (float(y) - float(y_hat)) ** 2 for y, y_hat in zip(y_original, y_predicted)
-    ) / len(y_original)
+    return sum((float(y) - float(y_hat)) ** 2 for y, y_hat in zip(y_original, y_predicted)) / len(
+        y_original
+    )
 
 
 def mae(y_predicted: list[float], y_original: list[float]) -> float:
     if len(y_original) != len(y_predicted):
         raise ValueError("Length of predicted and original lists must be the same.")
 
-    return sum(
-        abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)
-    ) / len(y_original)
+    return sum(abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)) / len(
+        y_original
+    )
 
 
 def modified_construct_location_from_area(addr: str) -> str:
@@ -137,7 +137,7 @@ def run_benchmark(preprocessed_data: dict[str, TrainingVector]):
             x_train = x_total[:start] + x_total[end:]
             y_train = y_total[:start] + y_total[end:]
 
-            weights = get_weight_vector(x_train, y_train)
+            weights = model_train(x_train, y_train)
 
             sklearn_model = LinearRegression()
             sklearn_model.fit(x_train, y_train)  # type:ignore
@@ -197,7 +197,7 @@ def create_bar_plot(
             x_train = x_total[:start] + x_total[end:]
             y_train = y_total[:start] + y_total[end:]
 
-            weights = get_weight_vector(x_train, y_train)
+            weights = model_train(x_train, y_train)
 
             sklearn_model = LinearRegression()
             sklearn_model.fit(x_train, y_train)  # type:ignore
@@ -209,21 +209,15 @@ def create_bar_plot(
 
             sklearn_prediction = sklearn_model.predict(x_test)  # type:ignore
 
-            scratch_r2_register[fold].update(
-                {location: r_squared(scratch_prediction, y_test)}
-            )
+            scratch_r2_register[fold].update({location: r_squared(scratch_prediction, y_test)})
             sklearn_r2_register[fold].update(
                 {location: r_squared(sklearn_prediction, y_test)}  # type:ignore
             )
-            scratch_mse_register[fold].update(
-                {location: mse(scratch_prediction, y_test)}
-            )
+            scratch_mse_register[fold].update({location: mse(scratch_prediction, y_test)})
             sklearn_mse_register[fold].update(
                 {location: mse(sklearn_prediction, y_test)}  # type:ignore
             )
-            scratch_mae_register[fold].update(
-                {location: mae(scratch_prediction, y_test)}
-            )
+            scratch_mae_register[fold].update({location: mae(scratch_prediction, y_test)})
             sklearn_mae_register[fold].update(
                 {location: mae(sklearn_prediction, y_test)}  # type:ignore
             )
@@ -300,11 +294,7 @@ def create_bar_plot(
             for color, vals in [("red", scratch_vals), ("blue", sklearn_vals)]:
                 for j, val in enumerate(vals):
                     if val < lower_bound or val > upper_bound:
-                        y_pos = (
-                            lower_bound + 0.05
-                            if val < lower_bound
-                            else upper_bound - 0.05
-                        )
+                        y_pos = lower_bound + 0.05 if val < lower_bound else upper_bound - 0.05
                         va = "bottom" if val < lower_bound else "top"
 
                         axis[i].annotate(

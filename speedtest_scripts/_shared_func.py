@@ -5,7 +5,7 @@ sys.path.insert(0, os.getcwd())
 
 from sklearn.linear_model import LinearRegression  # type:ignore
 import timeit
-from app.model.linear_regression import get_weight_vector
+from app.model.linear_regression import model_train
 from benchmarks.scripts.__common import r_squared, mse, mae
 from app.types import TrainingVector
 
@@ -14,9 +14,7 @@ def run_speedtest(preprocessed_data: dict[str, TrainingVector]):
     locations = list(preprocessed_data.keys())
 
     work_on_location = [
-        location
-        for location in locations
-        if len(preprocessed_data[location].feature_vectors) >= 10
+        location for location in locations if len(preprocessed_data[location].feature_vectors) >= 10
     ]
 
     print("Working on {} locations.".format(len(work_on_location)))
@@ -47,7 +45,7 @@ def run_speedtest(preprocessed_data: dict[str, TrainingVector]):
                 x_train = x_total[:start] + x_total[end:]
                 y_train = y_total[:start] + y_total[end:]
 
-                weights = get_weight_vector(x_train, y_train)
+                weights = model_train(x_train, y_train)
 
                 y_pred: list[float] = []
                 for x in x_test:

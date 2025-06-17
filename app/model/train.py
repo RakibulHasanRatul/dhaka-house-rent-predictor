@@ -4,18 +4,18 @@ import os
 from app.types import TrainingVector
 from config import DATA_PROCESSED_DIR, WEIGHTS_JSON_DIR
 
-from .linear_regression import get_weight_vector
+from .linear_regression import model_train
 
 os.makedirs(DATA_PROCESSED_DIR, exist_ok=True)
 
 
-def train_data(dataset: dict[str, TrainingVector]):
+def train_all_dataset(dataset: dict[str, TrainingVector]):
     weights: dict[str, list[list[float]]] = {}
 
     locations = dataset.keys()
 
     for location in locations:
-        weights[location] = get_weight_vector(
+        weights[location] = model_train(
             feature_matrix=dataset[location].feature_vectors,
             labels=dataset[location].labels,
         )

@@ -7,7 +7,7 @@ from sklearn.linear_model import LinearRegression  # type:ignore
 import timeit
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
-from app.model.linear_regression import get_weight_vector
+from app.model.linear_regression import model_train
 from config import FORMATTED_CSV_GIST_URL
 from benchmarks.scripts.__common import (
     r_squared,
@@ -48,7 +48,7 @@ def run_speedtest_ensuring_larger_datasets():
             x_train = x_total[:start] + x_total[end:]
             y_train = y_total[:start] + y_total[end:]
 
-            weights = get_weight_vector(x_train, y_train)
+            weights = model_train(x_train, y_train)
 
             y_pred: list[float] = []
             for x in x_test:

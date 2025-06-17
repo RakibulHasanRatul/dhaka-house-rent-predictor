@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.getcwd())
 
-from app.model.linear_regression import get_weight_vector
+from app.model.linear_regression import model_train
 from app.types import TrainingVector
 from benchmarks.scripts.__common import r_squared
 
@@ -25,7 +25,7 @@ def generate_scoreboard(preprocessed_data: dict[str, TrainingVector]):
             x_train = x_total[slice:]
             y_train = y_total[slice:]
 
-            weights = get_weight_vector(x_train, y_train)
+            weights = model_train(x_train, y_train)
 
             y_pred: list[float] = []
             for x in x_test:
@@ -46,6 +46,4 @@ def generate_scoreboard(preprocessed_data: dict[str, TrainingVector]):
     locations = sorted(locations, key=lambda x: scoreboard[x], reverse=True)
 
     for location in locations:
-        print(
-            f"|{location}|{scoreboard[location] if scoreboard[location] != -1e13 else 'N/A'}|"
-        )
+        print(f"|{location}|{scoreboard[location] if scoreboard[location] != -1e13 else 'N/A'}|")

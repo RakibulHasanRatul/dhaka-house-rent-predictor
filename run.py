@@ -7,7 +7,7 @@ from app.handler.data.preprocess import (
     preprocess_loaded_data,
     load_and_refit_kaggle_csv,
 )
-from app.model.train import train_data
+from app.model.train import train_all_dataset
 from config import FORMATTED_CSV_GIST_URL, RAW_KAGGLE_CSV_GIST_URL
 
 
@@ -25,7 +25,7 @@ def load_data_and_train_model(from_raw_csv: bool = False, url: str = "") -> None
 
     formatted_data = preprocess_loaded_data(loaded_data)
 
-    train_data(formatted_data)
+    train_all_dataset(formatted_data)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
 from .matrix_calculation import inverse, matrix_mul, transpose
 
 
-def get_weight_vector(
+def model_train(
     feature_matrix: list[list[float]],
     labels: list[float],
     lambda_l2: float = 1e-13,
