@@ -3,7 +3,8 @@ import sys
 
 sys.path.insert(0, os.getcwd())
 
-from __common import modified_preprocess_loaded_data, run_benchmark
+from modified_preprocessing import modified_preprocess_loaded_data
+from __common import run_benchmark
 
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data

@@ -9,12 +9,8 @@ from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
 from app.model.linear_regression import model_train
 from config import FORMATTED_CSV_GIST_URL
-from benchmarks.scripts.__common import (
-    r_squared,
-    mse,
-    mae,
-    modified_preprocess_loaded_data,
-)
+from performance_metrics_functions import r_squared, mse, mae
+from modified_preprocessing import modified_preprocess_loaded_data
 
 
 def run_speedtest_ensuring_larger_datasets():

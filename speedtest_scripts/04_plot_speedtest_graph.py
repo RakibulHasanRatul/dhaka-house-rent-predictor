@@ -1,21 +1,19 @@
 import os
 import sys
-
-sys.path.insert(0, os.getcwd())
-
-from sklearn.linear_model import LinearRegression  # type:ignore
 import timeit
+
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression  # type:ignore
+
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
 from app.model.linear_regression import model_train
 from config import FORMATTED_CSV_GIST_URL
-from benchmarks.scripts.__common import (
-    r_squared,
-    mse,
-    mae,
-    modified_preprocess_loaded_data,
-)
-import matplotlib.pyplot as plt
+from modified_preprocessing import modified_preprocess_loaded_data
+from performance_metrics_functions import mae, mse, r_squared
+
+sys.path.insert(0, os.getcwd())
+
 
 NUMBER_OF_FOLDS = int(os.environ.get("CV_N", 5))
 DATASET_LEN_INCREASE = NUMBER_OF_FOLDS  # of course can be changed!

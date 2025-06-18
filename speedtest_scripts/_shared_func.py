@@ -6,7 +6,7 @@ sys.path.insert(0, os.getcwd())
 from sklearn.linear_model import LinearRegression  # type:ignore
 import timeit
 from app.model.linear_regression import model_train
-from benchmarks.scripts.__common import r_squared, mse, mae
+from performance_metrics_functions import r_squared, mse, mae
 from app.types import TrainingVector
 
 

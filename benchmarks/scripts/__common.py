@@ -1,109 +1,15 @@
-import json
 import os
 from collections import defaultdict
-from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression  # type:ignore
 
-from app.helper import construct_features_list
+
 from app.model.linear_regression import model_train
 from app.types import TrainingVector
-from config import DATA_PROCESSED_DIR, LOCATION_JSON_DIR, TYPES_JSON_DIR
 
-
-def r_squared(y_predicted: list[float], y_original: list[float]) -> float:
-    if len(y_original) != len(y_predicted):
-        raise ValueError("Length of predicted and original lists must be the same.")
-
-    # in the previous commits, I used the formula r_squared_value = 1 - (ss_res / ss_tot)
-    # but to reduced the number of mathematical operations,
-    # I used the formula r_squared_value = ss_reg / ss_tot
-    # this formula is defined in wikipedia
-    # you can learn more at:
-    # https://en.wikipedia.org/wiki/Coefficient_of_determination#As_explained_variance
-
-    y_mean = sum(y_original) / len(y_original)
-
-    _q = sum((y_o - y_mean) ** 2 for y_o in y_original)
-    if _q == 0:
-        # All y values are (almost) the same, R squared value is undefined
-        # treating as 0 for safe reporting
-        return 0.0
-
-    _p = sum((y_p - y_mean) ** 2 for y_p in y_predicted)
-
-    return _p / _q
-
-
-def mse(y_predicted: list[float], y_original: list[float]) -> float:
-    if len(y_original) != len(y_predicted):
-        raise ValueError("Length of predicted and original lists must be the same.")
-
-    return sum((float(y) - float(y_hat)) ** 2 for y, y_hat in zip(y_original, y_predicted)) / len(
-        y_original
-    )
-
-
-def mae(y_predicted: list[float], y_original: list[float]) -> float:
-    if len(y_original) != len(y_predicted):
-        raise ValueError("Length of predicted and original lists must be the same.")
-
-    return sum(abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)) / len(
-        y_original
-    )
-
-
-def modified_construct_location_from_area(addr: str) -> str:
-    parts = [part.strip() for part in addr.split(",")]
-    if len(parts) < 2:
-        return addr.title()
-
-    return f"{parts[-2]}, {parts[-1]}".title()
-
-
-def modified_preprocess_loaded_data(
-    data: dict[str, list[Any]],
-) -> dict[str, TrainingVector]:
-    house_types = sorted({str(cell).strip() for cell in data["type"]})
-    os.makedirs(DATA_PROCESSED_DIR, exist_ok=True)
-    with open(TYPES_JSON_DIR, "w") as f:
-        json.dump({"types": list(house_types)}, f)
-
-    data["type_num"] = [house_types.index(str(cell).strip()) for cell in data["type"]]
-    del data["type"]
-
-    data["location"] = [
-        modified_construct_location_from_area(str(cell)) for cell in data["address"]
-    ]
-    del data["address"]
-
-    locations = sorted({str(cell) for cell in data["location"]})
-    with open(LOCATION_JSON_DIR, "w") as f:
-        json.dump({"locations": list(locations)}, f)
-
-    rents: dict[str, list[float]] = defaultdict(list[float])
-    features: dict[str, list[list[float]]] = defaultdict(list[list[float]])
-
-    for i, location in enumerate(data["location"]):
-        feature_set = [1.0] + construct_features_list(
-            beds=float(data["beds"][i]),
-            bath=float(data["bath"][i]),
-            area=float(data["area"][i]),
-            type_num=float(data["type_num"][i]),
-            year=float(data["year"][i]),
-        )
-        features[location].append(feature_set)
-        rents[location].append(float(data["rent"][i]))
-
-    training_dataset: dict[str, TrainingVector] = {}
-    for location in locations:
-        training_dataset[location] = TrainingVector(
-            feature_vectors=features[location], labels=rents[location]
-        )
-
-    return training_dataset
+from performance_metrics_functions import r_squared, mse, mae
 
 
 def run_benchmark(preprocessed_data: dict[str, TrainingVector]):

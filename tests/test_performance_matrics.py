@@ -1,4 +1,4 @@
-from benchmarks.scripts.__common import mae, mse, r_squared
+from performance_metrics_functions import mae, mse, r_squared
 import pytest
 
 
@@ -14,7 +14,9 @@ def test_r_squared_random_prediction():
     y_original = [1.0, 2.0, 3.0, 4.0, 5.0]
     y_predicted = [1.5, 2.5, 3.5, 4.5, 5.5]
     y_mean = sum(y_original) / len(y_original)
-    expected = sum((y_p - y_mean) ** 2 for y_p in y_predicted) / sum((y_o - y_mean) ** 2 for y_o in y_original)
+    expected = sum((y_p - y_mean) ** 2 for y_p in y_predicted) / sum(
+        (y_o - y_mean) ** 2 for y_o in y_original
+    )
     assert r_squared(y_predicted, y_original) == pytest.approx(expected)
 
 
@@ -67,12 +69,12 @@ def test_length_mismatch():
     # Test that functions raise ValueError when input lists have different lengths
     y_original = [1.0, 2.0, 3.0]
     y_predicted = [1.0, 2.0]
-    
+
     with pytest.raises(ValueError):
         r_squared(y_predicted, y_original)
-    
+
     with pytest.raises(ValueError):
         mse(y_predicted, y_original)
-    
+
     with pytest.raises(ValueError):
         mae(y_predicted, y_original)
