@@ -13,4 +13,5 @@ benchmark-test = [
 ]
 dev = [
     "pytest>=8.3.5",
+    "setuptools>=80.9.0",
 ]
