@@ -10,7 +10,5 @@ def load_csv_data(file_path: str) -> dict[str, list[Any]]:
         reader = csv.DictReader(file)
         for row in reader:
             for k, v in row.items():
-                if k is None:
-                    print(row)
                 data[k].append(v)
-    return dict(data)
+    return data

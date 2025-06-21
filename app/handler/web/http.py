@@ -28,12 +28,12 @@ class HttpHandler(BaseHTTPRequestHandler):
         if self.path == "/locations":
             # not adding error handling logics, I assume user will train first then serve the ui!
             with open(LOCATION_JSON_DIR, "r") as file:
-                to_response: dict[str, list[str]] = json.load(file)
+                res: dict[str, list[str]] = json.load(file)
 
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
-            self.wfile.write(json.dumps(to_response).encode("utf-8"))
+            self.wfile.write(json.dumps(res).encode("utf-8"))
 
         if self.path == "/types":
             # again, not adding error handling logics, I assume user will train first then serve the ui!
@@ -65,9 +65,7 @@ class HttpHandler(BaseHTTPRequestHandler):
                 self.send_response(400)
                 self.send_header("Content-type", "text/plain")
                 self.end_headers()
-                self.wfile.write(
-                    b"400 Bad Request: Content-Type must be application/json"
-                )
+                self.wfile.write(b"400 Bad Request: Content-Type must be application/json")
                 return
             try:
                 data = json.loads(request_body)
@@ -92,9 +90,7 @@ class HttpHandler(BaseHTTPRequestHandler):
                     self.send_header("Content-type", "text/plain")
                     self.end_headers()
                     self.wfile.write(
-                        f"400 Bad Request: Missing key '{key}' in JSON data".encode(
-                            "utf-8"
-                        )
+                        f"400 Bad Request: Missing key '{key}' in JSON data".encode("utf-8")
                     )
                     return
 

@@ -43,7 +43,7 @@ def run_benchmark(preprocessed_data: dict[str, TrainingVector]):
             x_train = x_total[:start] + x_total[end:]
             y_train = y_total[:start] + y_total[end:]
 
-            weights = model_train(x_train, y_train)
+            weights = model_train(x_train, [[y] for y in y_train])
 
             sklearn_model = LinearRegression()
             sklearn_model.fit(x_train, y_train)  # type:ignore
@@ -103,7 +103,7 @@ def create_bar_plot(
             x_train = x_total[:start] + x_total[end:]
             y_train = y_total[:start] + y_total[end:]
 
-            weights = model_train(x_train, y_train)
+            weights = model_train(x_train, [[y] for y in y_train])
 
             sklearn_model = LinearRegression()
             sklearn_model.fit(x_train, y_train)  # type:ignore

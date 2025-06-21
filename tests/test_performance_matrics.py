@@ -1,5 +1,7 @@
-from performance_metrics_functions import mae, mse, r_squared
+# type:ignore
 import pytest
+
+from performance_metrics_functions import mae, mse, r_squared
 
 
 def test_r_squared_perfect_prediction():

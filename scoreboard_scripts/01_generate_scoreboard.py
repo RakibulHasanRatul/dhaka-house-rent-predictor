@@ -7,7 +7,7 @@ from _scoreboard_func import generate_scoreboard
 
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
-from benchmarks.scripts.__common import modified_preprocess_loaded_data
+from modified_preprocessing import modified_preprocess_loaded_data
 from config import FORMATTED_CSV_GIST_URL
 
 if __name__ == "__main__":

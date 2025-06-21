@@ -25,7 +25,7 @@ def generate_scoreboard(preprocessed_data: dict[str, TrainingVector]):
             x_train = x_total[slice:]
             y_train = y_total[slice:]
 
-            weights = model_train(x_train, y_train)
+            weights = model_train(x_train, [[y] for y in y_train])
 
             y_pred: list[float] = []
             for x in x_test:

@@ -16,8 +16,8 @@ def train_all_dataset(dataset: dict[str, TrainingVector]):
 
     for location in locations:
         weights[location] = model_train(
-            feature_matrix=dataset[location].feature_vectors,
-            labels=dataset[location].labels,
+            x_vector=dataset[location].feature_vectors,
+            y_vector=[[y] for y in dataset[location].labels],
         )
 
     with open(WEIGHTS_JSON_DIR, "w") as file:

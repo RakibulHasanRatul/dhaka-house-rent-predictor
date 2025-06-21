@@ -8,9 +8,9 @@ While the program results refined for some locations, it is not as accurate as i
 
 Why? $R^2$ value ranges up to 1, and 10 times of it ranges up to 10. Certainly, as the $R^2$ value increases, the MSE and MAE (error values) also decreases.
 
-However, for ensuring fair test, I provided two scoreboards. [**Scoreboard 01**](#scoreboard-01) is by using the `modified_preprocess_loaded_data` function defined in [benchmarks/scripts/\_\_common.py](./benchmarks/scripts/__common.py). The script is in the [scoreboard_scripts/01_generate_scoreboard.py](./scoreboard_scripts/01_generate_scoreboard.py).
+However, for ensuring fair test, I provided two scoreboards. [**Scoreboard 01**](#scoreboard-01) is by using the `modified_preprocess_loaded_data` function defined in [modified_preprocessing.py](./modified_preprocessing.py). The script is in the [01_generate_scoreboard.py](./scoreboard_scripts/01_generate_scoreboard.py) file.
 
-And, [**Scoreboard 02**](#scoreboard-02) represents the original `construct_location_from_area` function defined in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py). The script is in the [scoreboard_scripts/02_generate_scoreboard.py](./scoreboard_scripts/02_generate_scoreboard.py).
+And, [**Scoreboard 02**](#scoreboard-02) represents the original `construct_location_from_area` function defined in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py). The script is in the [02_generate_scoreboard.py](./scoreboard_scripts/02_generate_scoreboard.py) file.
 
 ## Scoreboard 01
 

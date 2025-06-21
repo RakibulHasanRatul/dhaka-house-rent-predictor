@@ -1,11 +1,7 @@
-import json
-import os
 from collections import defaultdict
 from typing import Any
-
 from app.helper import construct_features_list
 from app.types import TrainingVector
-from config import DATA_PROCESSED_DIR, LOCATION_JSON_DIR, TYPES_JSON_DIR
 
 
 def modified_construct_location_from_area(addr: str) -> str:
@@ -20,9 +16,6 @@ def modified_preprocess_loaded_data(
     data: dict[str, list[Any]],
 ) -> dict[str, TrainingVector]:
     house_types = sorted({str(cell).strip() for cell in data["type"]})
-    os.makedirs(DATA_PROCESSED_DIR, exist_ok=True)
-    with open(TYPES_JSON_DIR, "w") as f:
-        json.dump({"types": list(house_types)}, f)
 
     data["type_num"] = [house_types.index(str(cell).strip()) for cell in data["type"]]
     del data["type"]
@@ -33,9 +26,6 @@ def modified_preprocess_loaded_data(
     del data["address"]
 
     locations = sorted({str(cell) for cell in data["location"]})
-    with open(LOCATION_JSON_DIR, "w") as f:
-        json.dump({"locations": list(locations)}, f)
-
     rents: dict[str, list[float]] = defaultdict(list[float])
     features: dict[str, list[list[float]]] = defaultdict(list[list[float]])
 
