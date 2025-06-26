@@ -7,7 +7,22 @@
 #include <string.h>
 #include <unistd.h>
 
-// overwhelmed to see that i've wrote memory leak prevention code more than actual logic!
+static pthread_t *threads = NULL;
+static int pool_size = 0;
+
+__attribute__((constructor)) static void init_thread_pool() {
+  pool_size = sysconf(_SC_NPROCESSORS_ONLN);
+  threads = malloc(pool_size * sizeof(pthread_t));
+  if (!threads) {
+    perror("Failed to allocate thread pool");
+    exit(EXIT_FAILURE);
+  }
+}
+
+__attribute__((destructor)) static void cleanup_thread_pool() {
+  free(threads);
+  threads = NULL;
+}
 
 void free_matrix(double **matrix, const int rows) {
   if (matrix == NULL) return;
@@ -84,7 +99,7 @@ struct mat_inverse_thread_data {
   int n_size;
 };
 
-void *eliminate_row_range_thread_func(void *arg) {
+void *inverse_th_fn(void *arg) {
   struct mat_inverse_thread_data *data = (struct mat_inverse_thread_data *)arg;
   double **aug = data->augmented_matrix;
   int row = data->row;
@@ -109,9 +124,8 @@ double **inverse_matrix(const double *const *matrix, const int n_size) {
     return NULL;
   }
 
-  const long int NUM_THREADS = sysconf(_SC_NPROCESSORS_ONLN);
   int workload = 2 * n_size * n_size;
-  if (workload < (10000 * NUM_THREADS)) {
+  if (workload < (10000 * pool_size)) {
     for (int row = 0; row < n_size; row++) {
       double pivot = augmented_matrix[row][row];
       if (pivot == 0) {
@@ -134,13 +148,11 @@ double **inverse_matrix(const double *const *matrix, const int n_size) {
       }
     }
   } else {
-    long int total_split = n_size < NUM_THREADS ? n_size : NUM_THREADS;
-    int split_per_iter = n_size / total_split;
-    int remaining_iter = n_size % total_split;
+    int split_per_iter = n_size / pool_size;
+    int remaining_iter = n_size % pool_size;
     int current = 0;
 
-    pthread_t threads[total_split];
-    struct mat_inverse_thread_data thread_data[total_split];
+    struct mat_inverse_thread_data thread_data[pool_size];
 
     for (int row = 0; row < n_size; row++) {
       double pivot = augmented_matrix[row][row];
@@ -154,7 +166,7 @@ double **inverse_matrix(const double *const *matrix, const int n_size) {
         augmented_matrix[row][col] /= pivot;
       }
 
-      for (int t = 0; t < total_split; t++) {
+      for (int t = 0; t < pool_size; t++) {
         int chunk = split_per_iter + (t < remaining_iter ? 1 : 0);
         thread_data[t] = (struct mat_inverse_thread_data){
             .augmented_matrix = augmented_matrix,
@@ -164,11 +176,19 @@ double **inverse_matrix(const double *const *matrix, const int n_size) {
             .n_size = n_size,
         };
         current += chunk;
-        pthread_create(&threads[t], NULL, eliminate_row_range_thread_func, &thread_data[t]);
+        if (pthread_create(&threads[t], NULL, inverse_th_fn, &thread_data[t]) != 0) {
+          fprintf(stderr, "Failed to create thread.\n");
+          free_matrix(augmented_matrix, n_size);
+          return NULL;
+        }
       }
 
-      for (int t = 0; t < total_split; t++) {
-        pthread_join(threads[t], NULL);
+      for (int t = 0; t < pool_size; t++) {
+        if (pthread_join(threads[t], NULL) != 0) {
+          fprintf(stderr, "Failed to join thread.\n");
+          free_matrix(augmented_matrix, n_size);
+          return NULL;
+        }
       }
     }
   }
@@ -184,19 +204,19 @@ double **inverse_matrix(const double *const *matrix, const int n_size) {
   return inverted_matrix;
 }
 
-struct mat_transpose_thread_data {
+struct transpose_th_d {
   const double *const *matrix;
   double **transposed;
-  int iter_max;
+  int iter_limit;
   int start;
   int end;
 };
 
-void *mat_transpose_thread_func(void *arg) {
-  struct mat_transpose_thread_data *data = (struct mat_transpose_thread_data *)arg;
+void *transpose_th_fn(void *arg) {
+  struct transpose_th_d *data = (struct transpose_th_d *)arg;
 
   for (int i = data->start; i < data->end; i++) {
-    for (int j = 0; j < data->iter_max; j++) {
+    for (int j = 0; j < data->iter_limit; j++) {
       data->transposed[j][i] = data->matrix[i][j];
     }
   }
@@ -220,9 +240,8 @@ double **transpose_matrix(const double *const *matrix, const int rows, const int
     }
   }
 
-  const long int NUM_THREADS = sysconf(_SC_NPROCESSORS_ONLN);
   int workload = rows * cols;
-  if (workload < (20000 * NUM_THREADS)) {
+  if (workload < (10000 * pool_size)) {
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         transposed[col][row] = matrix[row][col];
@@ -230,31 +249,29 @@ double **transpose_matrix(const double *const *matrix, const int rows, const int
     }
 
   } else {
-    long int total_split = rows < NUM_THREADS ? rows : NUM_THREADS;
-    int iter_per_thread = rows / total_split;
-    int remaining_iter = rows % total_split;
+    int iter_per_thread = rows / pool_size;
+    int remaining_iter = rows % pool_size;
     int current_unit = 0;
 
-    struct mat_transpose_thread_data thread_data[total_split];
-    pthread_t threads[total_split];
+    struct transpose_th_d thread_data[pool_size];
 
-    for (int t = 0; t < total_split; t++) {
-      thread_data[t] = (struct mat_transpose_thread_data){
+    for (int t = 0; t < pool_size; t++) {
+      thread_data[t] = (struct transpose_th_d){
           .matrix = matrix,
           .transposed = transposed,
-          .iter_max = cols,
+          .iter_limit = cols,
           .end = current_unit + iter_per_thread + (t < remaining_iter ? 1 : 0),
           .start = current_unit,
       };
       current_unit += iter_per_thread;
 
-      if (pthread_create(&threads[t], NULL, mat_transpose_thread_func, &thread_data[t]) != 0) {
+      if (pthread_create(&threads[t], NULL, transpose_th_fn, &thread_data[t]) != 0) {
         fprintf(stderr, "Failed to create thread.\n");
         return NULL;
       }
     }
 
-    for (int t = 0; t < total_split; t++) {
+    for (int t = 0; t < pool_size; t++) {
       if (pthread_join(threads[t], NULL) != 0) {
         fprintf(stderr, "Failed to join thread.\n");
         return NULL;
@@ -265,7 +282,7 @@ double **transpose_matrix(const double *const *matrix, const int rows, const int
   return transposed;
 }
 
-struct mat_mul_thread_data {
+struct mul_th_d {
   const double *const *mat_a;
   const double *const *mat_b;
   double **result;
@@ -275,20 +292,27 @@ struct mat_mul_thread_data {
   int lower_iter;
 };
 
-void *mat_mul_thread_func(void *arg) {
-  struct mat_mul_thread_data *data = (struct mat_mul_thread_data *)arg;
+// This version ensures CPU L1 or L2 cache utilization
+void *mul_th_fn(void *arg) {
+  struct mul_th_d *data = (struct mul_th_d *)arg;
+  const int BLOCK_SIZE = 64;
 
-  // Row-wise parallelization: Each thread computes a range of rows
   for (int i = data->start; i < data->end; i++) {
-    for (int j = 0; j < data->upper_iter; j++) {
-      double sum = 0.0;
-      for (int k = 0; k < data->lower_iter; k++) {
-        sum += data->mat_a[i][k] * data->mat_b[k][j];
+    for (int jj = 0; jj < data->upper_iter; jj += BLOCK_SIZE) {
+      for (int kk = 0; kk < data->lower_iter; kk += BLOCK_SIZE) {
+        int j_end = (jj + BLOCK_SIZE) < data->upper_iter ? (jj + BLOCK_SIZE) : data->upper_iter;
+        int k_end = (kk + BLOCK_SIZE) < data->lower_iter ? (kk + BLOCK_SIZE) : data->lower_iter;
+
+        for (int col = jj; col < j_end; col++) {
+          double sum = data->result[i][col];
+          for (int row = kk; row < k_end; row++) {
+            sum += data->mat_a[i][row] * data->mat_b[row][col];
+          }
+          data->result[i][col] = sum;
+        }
       }
-      data->result[i][j] = sum;
     }
   }
-
   return NULL;
 }
 
@@ -321,28 +345,36 @@ double **multiply_matrices(const double *const *mat_a, const double *const *mat_
       return NULL;
     }
   }
-  const long int NUM_THREADS = sysconf(_SC_NPROCESSORS_ONLN);
-  int workload = rows_a * cols_b * cols_a;
-  if (workload < (50000 * NUM_THREADS)) {
+  const int workload = rows_a * cols_b * cols_a;
+  if (workload < (10000 * pool_size)) {
+    // also ensure L1 and L2 cache utilization
+    const int BLOCK_SIZE = 64;
     for (int i = 0; i < rows_a; i++) {
-      for (int j = 0; j < cols_b; j++) {
-        for (int k = 0; k < cols_a; k++) {
-          result[i][j] += mat_a[i][k] * mat_b[k][j];
+      for (int jj = 0; jj < cols_b; jj += BLOCK_SIZE) {
+        for (int kk = 0; kk < cols_a; kk += BLOCK_SIZE) {
+          int j_end = (jj + BLOCK_SIZE) < cols_b ? (jj + BLOCK_SIZE) : cols_b;
+          int k_end = (kk + BLOCK_SIZE) < cols_a ? (kk + BLOCK_SIZE) : cols_a;
+
+          for (int col = jj; col < j_end; col++) {
+            double sum = result[i][col];
+            for (int row = kk; row < k_end; row++) {
+              sum += mat_a[i][row] * mat_b[row][col];
+            }
+            result[i][col] = sum;
+          }
         }
       }
     }
 
   } else {
-    int total_split = rows_a < NUM_THREADS ? rows_a : NUM_THREADS;
-    pthread_t threads[total_split];
-    struct mat_mul_thread_data thread_data[total_split];
-    int iter_per_thread = rows_a / total_split;
-    int remaining = rows_a % total_split;
+    struct mul_th_d thread_data[pool_size];
+    int iter_per_thread = rows_a / pool_size;
+    int remaining = rows_a % pool_size;
     int current = 0;
 
-    for (int t = 0; t < total_split; t++) {
+    for (int t = 0; t < pool_size; t++) {
       int chunk = iter_per_thread + (t < remaining ? 1 : 0);
-      thread_data[t] = (struct mat_mul_thread_data){
+      thread_data[t] = (struct mul_th_d){
           .mat_a = mat_a,
           .mat_b = mat_b,
           .result = result,
@@ -353,14 +385,14 @@ double **multiply_matrices(const double *const *mat_a, const double *const *mat_
       };
       current += chunk;
 
-      if (pthread_create(&threads[t], NULL, mat_mul_thread_func, &thread_data[t]) != 0) {
+      if (pthread_create(&threads[t], NULL, mul_th_fn, &thread_data[t]) != 0) {
         fprintf(stderr, "Failed to create thread.\n");
         free_matrix(result, rows_a);
         return NULL;
       }
     }
 
-    for (int t = 0; t < total_split; t++) {
+    for (int t = 0; t < pool_size; t++) {
       if (pthread_join(threads[t], NULL) != 0) {
         fprintf(stderr, "Failed to join thread.\n");
         free_matrix(result, rows_a);

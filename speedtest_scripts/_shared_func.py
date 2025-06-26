@@ -1,14 +1,14 @@
-from collections import defaultdict
 import os
 import sys
+from collections import defaultdict
 
 sys.path.insert(0, os.getcwd())
 
 import timeit
 from typing import Any, Callable
 
-from sklearn.linear_model import LinearRegression  # type:ignore
 import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression  # type:ignore
 
 from app.handler.data.download import download_csv_from_gist
 from app.helper import construct_features_list
@@ -83,7 +83,9 @@ def run_speedtest(preprocessed_data: dict[str, TrainingVector]):
     locations = list(preprocessed_data.keys())
 
     work_on_location = [
-        location for location in locations if len(preprocessed_data[location].feature_vectors) >= 10
+        location
+        for location in locations
+        if len(preprocessed_data[location].feature_vectors) >= 10
     ]
 
     print("Working on {} locations.".format(len(work_on_location)))
@@ -174,7 +176,7 @@ def run_speedtest_and_plot_graph(
     scratch_train_func: Callable[..., list[list[float]]],
     scratch_predict_func: Callable[[list[float], list[list[float]]], float],
     reg_scratch: float = 1e-13,
-    scratch_model_name: str = "py_impl",
+    scratch_graph_label: str = "Scratch-built model",
 ):
     dataset_len_total = len(x_total)
 
@@ -237,7 +239,7 @@ def run_speedtest_and_plot_graph(
     ax.plot(  # type:ignore
         used_dataset_lengths,
         scratch_built_times,
-        label=f"Scratch-build [{scratch_model_name}] Model",
+        label=f"{scratch_graph_label}",
         color="red",
     )
 

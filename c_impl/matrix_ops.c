@@ -1,10 +1,8 @@
 #include "matrix_ops.h"
 
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 // overwhelmed to see that i've wrote memory leak prevention code more than actual logic!
 
@@ -168,12 +166,6 @@ double **multiply_matrices(const double *const *mat_a, const double *const *mat_
       return NULL;
     }
   }
-
-  long int THREADS_NUM = sysconf(_SC_NPROCESSORS_ONLN);
-  bool parallelize_row = false;
-
-  // i'll find compare the rows_a and cols_b to find the max and optimize creating threads on that.
-  if (rows_a > cols_b) parallelize_row = true;
 
   for (int i = 0; i < rows_a; i++) {
     for (int j = 0; j < cols_b; j++) {

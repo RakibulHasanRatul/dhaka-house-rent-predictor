@@ -1,5 +1,5 @@
 def train(
-    feature_vectors: list[list[float]], label_vectors: list[list[float]], lambda_: float = 1e-13
+    feature_vectors: list[list[float]], label_vectors: list[list[float]], lambda_l2: float = 1e-12
 ) -> list[list[float]]:
     """
     Trains a linear regression model.
@@ -10,8 +10,8 @@ def train(
         A list of feature vectors, where each feature vector is a list of floats. The feature vector is equivalent to [1, features[0], features[1], features[2], ..., features[n - 1]] where n is the number of features.
     label_vectors : list[list[float]]
         A list of labels, where each label is a float. it is equivalent to [[labels[0]], [labels[1]], ... [labels[n - 1]]] where n is the number of samples.
-    lambda_ : float, optional
-        The L2 regularization parameter, by default 1e-13.
+    lambda_l2 : float, optional
+        The L2 regularization parameter, by default 1e-12.
 
     Returns
     -------

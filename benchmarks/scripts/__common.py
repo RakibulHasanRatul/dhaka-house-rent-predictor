@@ -5,11 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression  # type:ignore
 
-
 from app.model.linear_regression import model_train
 from app.types import TrainingVector
-
-from performance_metrics_functions import r_squared, mse, mae
+from performance_metrics_functions import mae, mse, r_squared
 
 
 def run_benchmark(preprocessed_data: dict[str, TrainingVector]):
@@ -115,15 +113,21 @@ def create_bar_plot(
 
             sklearn_prediction = sklearn_model.predict(x_test)  # type:ignore
 
-            scratch_r2_register[fold].update({location: r_squared(scratch_prediction, y_test)})
+            scratch_r2_register[fold].update(
+                {location: r_squared(scratch_prediction, y_test)}
+            )
             sklearn_r2_register[fold].update(
                 {location: r_squared(sklearn_prediction, y_test)}  # type:ignore
             )
-            scratch_mse_register[fold].update({location: mse(scratch_prediction, y_test)})
+            scratch_mse_register[fold].update(
+                {location: mse(scratch_prediction, y_test)}
+            )
             sklearn_mse_register[fold].update(
                 {location: mse(sklearn_prediction, y_test)}  # type:ignore
             )
-            scratch_mae_register[fold].update({location: mae(scratch_prediction, y_test)})
+            scratch_mae_register[fold].update(
+                {location: mae(scratch_prediction, y_test)}
+            )
             sklearn_mae_register[fold].update(
                 {location: mae(sklearn_prediction, y_test)}  # type:ignore
             )
@@ -200,7 +204,11 @@ def create_bar_plot(
             for color, vals in [("red", scratch_vals), ("blue", sklearn_vals)]:
                 for j, val in enumerate(vals):
                     if val < lower_bound or val > upper_bound:
-                        y_pos = lower_bound + 0.05 if val < lower_bound else upper_bound - 0.05
+                        y_pos = (
+                            lower_bound + 0.05
+                            if val < lower_bound
+                            else upper_bound - 0.05
+                        )
                         va = "bottom" if val < lower_bound else "top"
 
                         axis[i].annotate(
