@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define WORKLOAD_THRESHOLD 10000
+#define WORKLOAD_THRESHOLD 15000
 
 static pthread_t *threads = NULL;
 static int pool_size = 0;

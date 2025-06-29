@@ -1,0 +1,48 @@
+[project]
+name = "c_impl"
+version = "1.0"
+description = "C implementation of linear regression model"
+requires-python = ">=3.12"
+dependencies = []
+
+[[project.authors]]
+name = "Rakibul Hasan Ratul"
+email = "rakibulhasanratul@proton.me"
+
+[build-system]
+requires = ["setuptools>=80.9", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["c_impl"] 
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"c_impl" = "."
+
+[tool.setuptools.package-data]
+"c_impl" = ["*.pyi"]
+
+[[tool.setuptools.ext-modules]]
+name = "c_impl"
+sources = [
+    "python_wrapper.c",
+    "linear_regression_model.c",
+    "matrix_ops.c"
+]
+include-dirs = ["."] 
+extra-compile-args = [
+    "-O3",
+    "-march=native",
+    "-flto",
+    "-ffast-math",
+    "-fomit-frame-pointer",
+    "-funroll-loops",
+    "-fno-strict-aliasing",
+    "-mavx2",
+    "-mfma",
+    "-ftree-vectorize",
+    "-fdata-sections",
+    "-ffunction-sections",
+]
+extra-link-args = ["-flto", "-s", "-Wl,--gc-sections"]
