@@ -1,5 +1,4 @@
 #include <python3.12/Python.h>
-#include <python3.12/listobject.h>
 #include <stdlib.h>
 
 #include "linear_regression_model.h"
