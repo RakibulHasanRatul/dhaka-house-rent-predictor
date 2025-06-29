@@ -44,5 +44,6 @@ extra-compile-args = [
     "-ftree-vectorize",
     "-fdata-sections",
     "-ffunction-sections",
+    "-pthread",
 ]
 extra-link-args = ["-flto", "-s", "-Wl,--gc-sections", "-pthread"]
