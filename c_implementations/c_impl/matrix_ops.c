@@ -15,46 +15,22 @@ void free_matrix(double **matrix, const int rows) {
   free(matrix);
 }
 
-double **construct_identity_matrix(const int n_size) {
-  double **i_mat = malloc(n_size * sizeof(double *));
-  if (!i_mat) return NULL;
-
-  for (int i = 0; i < n_size; i++) {
-    i_mat[i] = calloc(n_size, sizeof(double));
-    if (!i_mat[i]) {
-      free_matrix(i_mat, i);
-      return NULL;
-    }
-    i_mat[i][i] = 1.0;
-  }
-  return i_mat;
-}
-
 double **augment_with_identity(const double *const *target_matrix, const int n_size) {
-  double **aug_mat = malloc(n_size * sizeof(double *));
-  if (!aug_mat) return NULL;
-
-  double **identity_mat = construct_identity_matrix(n_size);
-  if (!identity_mat) {
-    free(aug_mat);
-    fprintf(stderr, "Error while allocating memory for identity matrix");
-    return NULL;
-  }
+  double **augmented_matrix = malloc(n_size * sizeof(double *));
+  if (!augmented_matrix) return NULL;
 
   for (int i = 0; i < n_size; i++) {
-    aug_mat[i] = malloc(2 * n_size * sizeof(double));
-    if (!aug_mat[i]) {
-      free_matrix(aug_mat, i);
-      free_matrix(identity_mat, n_size);
+    augmented_matrix[i] = calloc(2 * n_size, sizeof(double));
+    if (!augmented_matrix[i]) {
+      free_matrix(augmented_matrix, i);
       return NULL;
     }
 
-    memcpy(aug_mat[i], target_matrix[i], n_size * sizeof(double));
-    memcpy(aug_mat[i] + n_size, identity_mat[i], n_size * sizeof(double));
+    memcpy(augmented_matrix[i], target_matrix[i], n_size * sizeof(double));
+    augmented_matrix[i][i + n_size] = 1.0;
   }
 
-  free_matrix(identity_mat, n_size);
-  return aug_mat;
+  return augmented_matrix;
 }
 
 double **slice_invert_from_augmented_matrix(double **matrix, const int n_size) {
