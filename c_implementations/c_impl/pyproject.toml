@@ -21,7 +21,7 @@ include-package-data = true
 "c_impl" = "."
 
 [tool.setuptools.package-data]
-"c_impl" = ["*.pyi"]
+"c_impl" =  ["*.pyi", "*.h"]
 
 [[tool.setuptools.ext-modules]]
 name = "c_impl"

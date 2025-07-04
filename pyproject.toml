@@ -8,4 +8,8 @@ dependencies = []
 
 [dependency-groups]
 benchmark-test = ["matplotlib", "scikit-learn"]
-dev = ["pytest", "pip"]
+dev = [
+    "pytest",
+ "pip",
+ "build>=1.2.2.post1",
+]

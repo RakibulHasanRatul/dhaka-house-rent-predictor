@@ -21,7 +21,7 @@ include-package-data = true
 "c_pthread" = "."
 
 [tool.setuptools.package-data]
-"c_pthread" = ["*.pyi"]
+"c_pthread" = ["*.pyi", "*.h"]
 
 [[tool.setuptools.ext-modules]]
 name = "c_pthread"

@@ -1,3 +1,6 @@
+from enum import Enum
+import sys
+
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
 from app.handler.data.preprocess import (
@@ -9,8 +12,14 @@ from app.serve import serve_ui
 from config import FORMATTED_CSV_GIST_URL, RAW_KAGGLE_CSV_GIST_URL
 
 
+class PackageList(Enum):
+    py_impl = "py_impl"
+    c_pthread = "c_pthread"
+    c_impl = "c_impl"
+
+
 def load_data_and_train_model(
-    from_raw_csv: bool = False, url: str = "", use_c_pthread: bool = False
+    from_raw_csv: bool = False, url: str = "", module: PackageList = PackageList.py_impl
 ) -> None:
     if not url:
         url = RAW_KAGGLE_CSV_GIST_URL if from_raw_csv else FORMATTED_CSV_GIST_URL
@@ -23,59 +32,42 @@ def load_data_and_train_model(
     else:
         loaded_data = load_csv_data(file_path)
 
-    if not use_c_pthread:
+    if module == PackageList.py_impl:
         train_fn = model_train
-    else:
-        import os
-        import platform
+    elif module == PackageList.c_pthread:
         import subprocess
 
-        system = platform.system()
+        subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "c_implementations/c_pthread/dist/c_pthread-1.0-cp313-cp313-linux_x86_64.whl",
+            ],
+            check=True,
+        )
 
-        try:
-            if system == "Windows":
-                subprocess.run(
-                    'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"',
-                    shell=True,
-                    check=True,
-                )
-            else:
-                try:
-                    subprocess.run(
-                        "curl -LsSf https://astral.sh/uv/install.sh | sh",
-                        shell=True,
-                        check=True,
-                    )
-                except Exception:
-                    subprocess.run(
-                        "wget -qO- https://astral.sh/uv/install.sh | sh",
-                        shell=True,
-                        check=True,
-                    )
+        from c_pthread import train
 
-            # Ensure uv is in the PATH.  This may require a restart of the shell
-            # or explicitly setting the PATH.  For simplicity, we'll try adding
-            # it to the current environment.  This won't persist, but might work.
-            if system == "Windows":
-                uv_path = os.path.join(os.environ["USERPROFILE"], ".uv", "bin")
-            else:
-                uv_path = os.path.join(os.environ["HOME"], ".uv", "bin")
+        train_fn = train
+    else:
+        import subprocess
 
-            os.environ["PATH"] = uv_path + os.pathsep + os.environ["PATH"]
+        subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "c_implementations/c_impl/dist/c_impl-1.0-cp313-cp313-linux_x86_64.whl",
+            ],
+            check=True,
+        )
 
-            subprocess.run(["uv", "pip", "install", "c_pthread/"], check=True)
+        from c_impl import train
 
-            from c_pthread import train
-
-            train_fn = train
-
-        except subprocess.CalledProcessError as e:
-            print(f"Error during uv installation or c_pthread installation: {e}")
-            raise  # Re-raise the exception to halt execution
-
-        except ImportError as e:
-            print(f"Error importing c_pthread module: {e}")
-            raise  # Re-raise the exception
+        train_fn = train
 
     formatted_data = preprocess_loaded_data(loaded_data)
 
@@ -87,6 +79,7 @@ if __name__ == "__main__":
     # Certainly, you can also set url parameter if you found a same-alike data and want to test.
     # Additionally, if you want to use the c implementation (pthead enabled),
     # then you can set use_c_pthread  parameter to `True`!
-    load_data_and_train_model(from_raw_csv=False, use_c_pthread=True)
+
+    load_data_and_train_model(from_raw_csv=False, module=PackageList.c_pthread)
     # after initialization, the program is gonna serve the ui!
     serve_ui()
