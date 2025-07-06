@@ -1,4 +1,4 @@
-#include <python3.12/Python.h>
+#include <python3.13/Python.h>
 #include <stdlib.h>
 
 #include "linear_regression_model.h"
