@@ -1,2 +1,0 @@
-c_implementations/c_impl/c_impl-1.0-cp313-cp313-linux_x86_64.whl
-c_implementations/c_pthread/c_pthread-1.0-cp313-cp313-linux_x86_64.whl
