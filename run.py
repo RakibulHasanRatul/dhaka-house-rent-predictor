@@ -1,4 +1,4 @@
-from enum import Enum
+import os
 
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
@@ -11,14 +11,8 @@ from app.serve import serve_ui
 from config import FORMATTED_CSV_GIST_URL, RAW_KAGGLE_CSV_GIST_URL
 
 
-class PackageList(Enum):
-    py_impl = "py_impl"
-    c_pthread = "c_pthread"
-    c_impl = "c_impl"
-
-
 def load_data_and_train_model(
-    from_raw_csv: bool = False, url: str = "", module: PackageList = PackageList.py_impl
+    from_raw_csv: bool = False, url: str = "", module: str = "py_impl"
 ) -> None:
     if not url:
         url = RAW_KAGGLE_CSV_GIST_URL if from_raw_csv else FORMATTED_CSV_GIST_URL
@@ -31,18 +25,18 @@ def load_data_and_train_model(
     else:
         loaded_data = load_csv_data(file_path)
 
-    if module == PackageList.py_impl:
-        from app.model.train import model_train
+    if module == "c_impl":
+        from c_impl import train
 
-        train_fn = model_train
-    elif module == PackageList.c_pthread:
+        train_fn = train
+    elif module == "c_pthread":
         from c_pthread import train
 
         train_fn = train
     else:
-        from c_impl import train
+        from app.model.train import model_train
 
-        train_fn = train
+        train_fn = model_train
 
     formatted_data = preprocess_loaded_data(loaded_data)
 
@@ -55,6 +49,8 @@ if __name__ == "__main__":
     # Additionally, if you want to use the c implementation (pthead enabled),
     # then you can set use_c_pthread here.
 
-    load_data_and_train_model(from_raw_csv=False, module=PackageList.c_pthread)
+    module_env = os.getenv("MODULE", "py_impl")
+
+    load_data_and_train_model(from_raw_csv=False, module=module_env)
     # after initialization, the program is gonna serve the ui!
     serve_ui()
