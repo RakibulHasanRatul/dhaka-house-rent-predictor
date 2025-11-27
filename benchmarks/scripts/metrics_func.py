@@ -26,15 +26,15 @@ def mse(y_predicted: list[float], y_original: list[float]) -> float:
     if len(y_original) != len(y_predicted):
         raise ValueError("Length of predicted and original lists must be the same.")
 
-    return sum((float(y) - float(y_hat)) ** 2 for y, y_hat in zip(y_original, y_predicted)) / len(
-        y_original
-    )
+    return sum(
+        (float(y) - float(y_hat)) ** 2 for y, y_hat in zip(y_original, y_predicted)
+    ) / len(y_original)
 
 
 def mae(y_predicted: list[float], y_original: list[float]) -> float:
     if len(y_original) != len(y_predicted):
         raise ValueError("Length of predicted and original lists must be the same.")
 
-    return sum(abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)) / len(
-        y_original
-    )
+    return sum(
+        abs(float(y) - float(y_hat)) for y, y_hat in zip(y_original, y_predicted)
+    ) / len(y_original)
