@@ -98,6 +98,9 @@ Experiments were conducted on a Ryzen 5600G CPU using 5-fold cross-validation.
 
 ![C Pthread Implementation Benchmark](images/graphs/speedtest_plots/c_pthread_5fold_5332d_6f.png)
 
+
+_**Scripts used for benchmarks can be found at [benchmarks/scripts](./benchmarks/scripts/) directory.**_
+
 ### 2.4 Key Findings
 
 1.  **Overhead Matters**: For micro-services or serverless functions handling small requests, heavy libraries like Pandas/Scikit-learn can be slower than simple Python loops due to initialization costs.

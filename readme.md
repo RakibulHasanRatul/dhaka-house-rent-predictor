@@ -1,5 +1,7 @@
 # Dhaka House Rent Predictor: A Machine Learning Model Built from Scratch
 
+> Project portfolio is available at [portfolio.md](./portfolio.md) file.
+
 A machine learning program to predict house rent in different locations in **Dhaka, Bangladesh**.
 
 <p align="center">
