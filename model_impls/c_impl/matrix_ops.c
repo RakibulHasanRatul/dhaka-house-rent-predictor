@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// overwhelmed to see that i've wrote memory leak prevention code more than actual logic!
+// overwhelmed to see that I wrote memory leak prevention code more than actual logic!
 
-void free_matrix(double **matrix, const int rows) {
+void free_matrix(double** matrix, const int rows) {
   if (matrix == NULL) return;
 
   for (int i = 0; i < rows; i++) {
@@ -15,8 +15,8 @@ void free_matrix(double **matrix, const int rows) {
   free(matrix);
 }
 
-double **augment_with_identity(const double *const *target_matrix, const int n_size) {
-  double **augmented_matrix = malloc(n_size * sizeof(double *));
+double** augment_with_identity(const double* const* target_matrix, const int n_size) {
+  double** augmented_matrix = malloc(n_size * sizeof(double*));
   if (!augmented_matrix) return NULL;
 
   for (int i = 0; i < n_size; i++) {
@@ -33,8 +33,8 @@ double **augment_with_identity(const double *const *target_matrix, const int n_s
   return augmented_matrix;
 }
 
-double **slice_invert_from_augmented_matrix(double **matrix, const int n_size) {
-  double **invert = malloc(n_size * sizeof(double *));
+double** slice_invert_from_augmented_matrix(double** matrix, const int n_size) {
+  double** invert = malloc(n_size * sizeof(double*));
   if (!invert) return NULL;
 
   for (int row = 0; row < n_size; row++) {
@@ -49,8 +49,8 @@ double **slice_invert_from_augmented_matrix(double **matrix, const int n_size) {
   return invert;
 }
 
-double **inverse_matrix(const double *const *matrix, const int n_size) {
-  double **augmented_matrix = augment_with_identity(matrix, n_size);
+double** inverse_matrix(const double* const* matrix, const int n_size) {
+  double** augmented_matrix = augment_with_identity(matrix, n_size);
   if (!augmented_matrix) {
     fprintf(stderr, "Failed to allocate memory while creating augmented matrix.\n");
     return NULL;
@@ -78,7 +78,7 @@ double **inverse_matrix(const double *const *matrix, const int n_size) {
     }
   }
 
-  double **inverted_matrix = slice_invert_from_augmented_matrix(augmented_matrix, n_size);
+  double** inverted_matrix = slice_invert_from_augmented_matrix(augmented_matrix, n_size);
   if (!inverted_matrix) {
     fprintf(stderr, "Failed to allocate memory while slicing inverted matrix.\n");
     free_matrix(augmented_matrix, n_size);
@@ -89,8 +89,8 @@ double **inverse_matrix(const double *const *matrix, const int n_size) {
   return inverted_matrix;
 }
 
-double **transpose_matrix(const double *const *matrix, const int rows, const int cols) {
-  double **transposed = malloc(cols * sizeof(double *));
+double** transpose_matrix(const double* const* matrix, const int rows, const int cols) {
+  double** transposed = malloc(cols * sizeof(double*));
   if (!transposed) {
     fprintf(stderr, "Failed to allocate memory for transposed matrix.\n");
     return NULL;
@@ -114,7 +114,7 @@ double **transpose_matrix(const double *const *matrix, const int rows, const int
   return transposed;
 }
 
-double **multiply_matrices(const double *const *mat_a, const double *const *mat_b, const int rows_a,
+double** multiply_matrices(const double* const* mat_a, const double* const* mat_b, const int rows_a,
                            const int cols_a, const int rows_b, const int cols_b) {
   if (!mat_a || !mat_b) {
     fprintf(stderr, "Invalid matrix provided for multiplication, got NULL.\n");
@@ -129,7 +129,7 @@ double **multiply_matrices(const double *const *mat_a, const double *const *mat_
     return NULL;
   }
 
-  double **result = malloc(rows_a * sizeof(double *));
+  double** result = malloc(rows_a * sizeof(double*));
   if (!result) {
     fprintf(stderr, "Failed to allocate memory for result matrix.\n");
     return NULL;
