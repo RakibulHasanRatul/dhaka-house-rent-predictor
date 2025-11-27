@@ -1,6 +1,6 @@
 # Speed Test Against scikit-learn's Linear Regression
 
-> **📊 For detailed analysis and interpretation of these results, see [Performance Analysis: Comprehensive Results Interpretation](./results_analysis.md)**
+> **For detailed analysis and interpretation of these results, see [Performance Analysis: Comprehensive Results Interpretation](./results_analysis.md)**
 
 This comparison highlights the trade-off between control (scratch-built) and optimization (Scikit-learn), especially in compute-constrained environments.
 
@@ -75,8 +75,8 @@ Sklearn model took 0.2903 seconds.
 
 ### Summary of Results with Smaller Dataset
 
-The speed test was conducted three times, and the results were consistent across runs. The scratch-built linear regression model consistently outperformed scikit-learn's implementation in terms of execution time.  
-The average time taken by the scratch-built model was approximately 0.1373 seconds, while the average time for the scikit-learn model was around 0.2894 seconds.  
+The speed test was conducted three times, and the results were consistent across runs. The scratch-built linear regression model consistently outperformed scikit-learn's implementation in terms of execution time.
+The average time taken by the scratch-built model was approximately 0.1373 seconds, while the average time for the scikit-learn model was around 0.2894 seconds.
 This indicates that the scratch implementation is approximately 1.9 times faster than scikit-learn's implementation for this specific dataset.
 
 ## Results With Larger Datasets
@@ -259,4 +259,4 @@ For reference, the 5 fold cross validation speed test graph is attached below.
 ## Result After This Much Work
 Just one line, yeah, I could beat scikit-learn's implementation with multithreading!
 
-The python implementation is noticeably slower than the c implementation. It is taking around 0.02 seconds to run through the entire dataset, **exactly 10 times better**! The c implementation (without multithreading) performs exactly the same as the scikit-learn (graph for reference). But with multithreading enabled, the c implementation is way faster than the scikit-learn implementation. It is taking around 0.01 seconds to run through the entire dataset! 
+The python implementation is noticeably slower than the c implementation. It is taking around 0.02 seconds to run through the entire dataset, **exactly 10 times better**! The c implementation (without multithreading) performs exactly the same as the scikit-learn (graph for reference). But with multithreading enabled, the c implementation is way faster than the scikit-learn implementation. It is taking around 0.01 seconds to run through the entire dataset!
