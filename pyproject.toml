@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "A python program to predict the house rents in Dhaka, Bangladesh in BDT"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
 
 [dependency-groups]
 benchmark-test = ["matplotlib", "scikit-learn"]

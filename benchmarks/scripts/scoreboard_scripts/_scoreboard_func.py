@@ -3,9 +3,10 @@ import sys
 
 sys.path.insert(0, os.getcwd())
 
-from app.model.linear_regression import model_train
+from py_impl import train as model_train
+
 from app.types import TrainingVector
-from benchmarks.scripts.__common import r_squared
+from benchmarks.scripts.metrics_func import r_squared
 
 
 def generate_scoreboard(preprocessed_data: dict[str, TrainingVector]):
@@ -46,4 +47,6 @@ def generate_scoreboard(preprocessed_data: dict[str, TrainingVector]):
     locations = sorted(locations, key=lambda x: scoreboard[x], reverse=True)
 
     for location in locations:
-        print(f"|{location}|{scoreboard[location] if scoreboard[location] != -1e13 else 'N/A'}|")
+        print(
+            f"|{location}|{scoreboard[location] if scoreboard[location] != -1e13 else 'N/A'}|"
+        )

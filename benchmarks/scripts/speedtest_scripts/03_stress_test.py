@@ -4,11 +4,11 @@ import timeit
 
 sys.path.insert(0, os.getcwd())
 
+from _shared_func import load_all_datasets
+from py_impl import train as model_train
 from sklearn.linear_model import LinearRegression  # type:ignore
 
-from _shared_func import load_all_datasets
-from app.model.linear_regression import model_train
-from performance_metrics_functions import mae, mse, r_squared
+from benchmarks.scripts.metrics_func import mae, mse, r_squared
 
 
 def run_speedtest_ensuring_larger_datasets():

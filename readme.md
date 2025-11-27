@@ -12,7 +12,7 @@ This project is a simple Python program that predicts house rent at various loca
 
 What's truly surprising is that this scratch-built model performs almost identically to highly optimized Scikit-learn's `LinearRegression` in terms of performance metrics like R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). Check out the detailed analysis in the [Performance Analysis](#performance-analysis-against-scikit-learn) section.
 
-The model also offers surprisingly fast performance, able to be trained for delevering predictions in **under 0.2 seconds for 5332 datasets** using pure Python. In fact, it’s been benchmarked (for training and delivering prediction) to run **up to 1.9× faster** than Scikit-learn’s implementation on **smaller datasets** just because of _numpy warmup time_, as shown in the [speedtest.md](./speedtest.md) file. **_However, performance significantly drops on larger datasets, where Scikit-learn's optimized implementation clearly outperforms the scratch-built model._**
+The model also offers surprisingly fast performance, able to be trained for delivering predictions in **under 0.2 seconds for 5332 datasets** using pure Python. In fact, it’s been benchmarked (for training and delivering prediction) to run **up to 1.9× faster** than Scikit-learn’s implementation on **smaller datasets** just because of _numpy warmup time_, as shown in the [speedtest.md](./speedtest.md) file. **_However, performance significantly drops on larger datasets, where Scikit-learn's optimized implementation clearly outperforms the scratch-built model._**
 
 > One line summary: Predicts house rent in Dhaka using a fully scratch-built ML pipeline with zero external libraries.
 
@@ -57,9 +57,9 @@ This project embraces several unconventional engineering choices — deliberatel
 
   From model training to the web interface and its backend — **everything is built using Python’s standard library only**!
 
-  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**  
-  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**  
-  ✓ Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).  
+  ⛌ No `Numpy`, `Pandas`, or **similar data manipulation libraries.**
+  ⛌ No `Flask`, `Django`, `FastAPI`, **or other web frameworks.**
+  ✓ Exclusively uses built-in Python libraries (e.g., `csv`, `json`, `http.server`).
   ⛌ No `Scikit-learn`, `TensorFlow`, or **other machine learning libraries** at all.
 
   A minimalist [`pyproject.toml`](./pyproject.toml) confirms zero external runtime dependencies.
@@ -110,11 +110,11 @@ This project embraces several unconventional engineering choices — deliberatel
 
 I ran benchmark tests against Scikit-learn's `LinearRegression` based on 5-fold cross-validation, determining R-squared ($R^2$), Mean Squared Error (MSE), and Mean Absolute Error (MAE). I found that **the custom implementation performs almost identically, and in some instances, even marginally better than the highly optimized Scikit-learn library.** The differences in performance metrics are often in the **decimal places**, highlighting the precision of the from-scratch approach.
 
-For this specific dataset the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times** slower than my scratch-built model **for smaller datasets due to numpy warmup time**. Speedtest results are available in the [speedtest.md](./speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for datasets, and the performance gap may narrow or even reverse with larger datasets. As shown in the [speedtest.md](./speedtest.md), performance of the scratch-built model drops significantly for larger datasets — where Scikit-learn's optimized backend excels.
+For this specific dataset the Scikit-Learn's `LinearRegression` model works noticeably slower than the scratch-built model. The custom implementation is not only faster but also achieves comparable or better performance metrics for the same dataset. The Scikit-Learn's model performed **almost 1.9 times** slower than my scratch-built model **for smaller datasets due to numpy warmup time**. Speedtest results are available in the [benchmarks/docs/speedtest.md](./benchmarks/docs/speedtest.md) file. However, to be fair, the Scikit-learn model is more optimized for datasets, and the performance gap may narrow or even reverse with larger datasets. As shown in the [benchmarks/docs/speedtest.md](./benchmarks/docs/speedtest.md), performance of the scratch-built model drops significantly for larger datasets — where Scikit-learn's optimized backend excels.
 
 > _Note that the performance characteristics may vary with different datasets and configurations._
 
-My step-by-step procedures and detailed [benchmark test results](./benchmarks/results/) are documented in the [benchmarks/steps.md](./benchmarks/steps.md) file.
+My step-by-step procedures and detailed [benchmark test results](./benchmarks/scripts/performance_comparison/results/) are documented in the [benchmarks/scripts/performance_comparison/steps.md](./benchmarks/scripts/performance_comparison/steps.md) file.
 
 ### Key Observations in Benchmark Results
 
@@ -141,7 +141,7 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks/re
       - MAE (Scratch): `2649.31827`, MAE (Sklearn): `2649.31827`
 
 4.  **Unsatisfactory Performance of Scratch Built Model in Some Locations:**
-    Although it was expected that the scratch-built model would perform well in all locations, it was found that **the model performed unsatisfactorily in some locations**, as shown in the [benchmarks/results/01_benchmark_results.md](./benchmarks/results/01_benchmark_results.md) file. This is because the model was not able to capture the unique characteristics of each location, which significantly drive rent prices in Dhaka. Although, unexpectedly this finding is **much rare** and **just seen in 01_benchmark_results.md file**, the 02_benchmark_results.md file does not show this finding.
+    Although it was expected that the scratch-built model would perform well in all locations, it was found that **the model performed unsatisfactorily in some locations**, as shown in the [benchmarks/scripts/performance_comparison/results/01_benchmark_results.md](./benchmarks/scripts/performance_comparison/results/01_benchmark_results.md) file. This is because the model was not able to capture the unique characteristics of each location, which significantly drive rent prices in Dhaka. Although, unexpectedly this finding is **much rare** and **just seen in 01_benchmark_results.md file**, the 02_benchmark_results.md file does not show this finding.
 
     - **Example (Adarsha Para, Uttar Khan, Dhaka - Fold 2):**
       - $R^2$ (Scratch): `-12.39805`, $R^2$ (Sklearn): `-0.33333`
@@ -152,20 +152,23 @@ My step-by-step procedures and detailed [benchmark test results](./benchmarks/re
 
 Although _numpy warmup time_ is a factor why sklearn's implementation is slower than the scratch-built model for small datasets, sklearn's implementation shows its strengths once numpy is initialized. For instance, 5 fold Cross Validation stress test graph is attached below.
 
-![5 fold Cross Validation stress test graph](./images/graphs/speed_comparisons/5_fold_speed_comparison.png)
+![5 fold Cross Validation stress test graph](./images/graphs/speedtest_plots/py_impl_5fold_5332d_6f.png)
 
 ### Summary of Performance Analysis
 
-These results confirm the correctness and reliability of the scratch-built model for most locations. While it occasionally underperforms in outlier regions with very few samples, it delivers comparable or better performance to Scikit-learn in the vast majority of scenarios — reinforcing the value of this from-scratch approach as a pedagogical and benchmarking tool.  
-Bar graphs of different performance matrics according to location are available in [`benchmarks/graphs`](./benchmarks/graphs) directory.
+These results confirm the correctness and reliability of the scratch-built model for most locations. While it occasionally underperforms in outlier regions with very few samples, it delivers comparable or better performance to Scikit-learn in the vast majority of scenarios — reinforcing the value of this from-scratch approach as a pedagogical and benchmarking tool.
+
+Bar graphs of different performance matrics according to location are available in [`images/graphs/02_benchmark_results_bar_plot/`](./images/graphs/02_benchmark_results_bar_plot/) directory.
+
+> **For comprehensive analysis of all performance results, see [Performance Analysis: Comprehensive Results Interpretation](./benchmarks/docs/results_analysis.md)**
 
 ## Location-wise Performance
 
-As shown in the [benchmarks/results/](./benchmarks/results/) directory, prediction for all locations is not as accurate as it should be. So, It will be vital to score each locations based on their performance metrics ($R^2$, MSE, MAE) and use the best performing locations for prediction.
+As shown in the [benchmarks/scripts/performance_comparison/results/](./benchmarks/scripts/performance_comparison/results/) directory, prediction for all locations is not as accurate as it should be. So, It will be vital to score each locations based on their performance metrics ($R^2$, MSE, MAE) and use the best performing locations for prediction.
 
-To avoid the readme to be too long, the scoreboard is in the [scoreboard.md](./scoreboard.md) file.
+To avoid the readme to be too long, the scoreboard is in the [benchmarks/docs/scoreboard.md](./benchmarks/docs/scoreboard.md) file.
 
-As shown in the [scoreboard.md](./scoreboard.md) file, the model performs best for 'Turag, Dhaka' location. You can see the scoreboard.md file for details.
+As shown in the [benchmarks/docs/scoreboard.md](./benchmarks/docs/scoreboard.md) file, the model performs best for 'Turag, Dhaka' location. You can see the scoreboard.md file for details.
 
 The scoreboard does not indicate that the model is worst performing. It is not about the model or the algorithm, but about trying to fit non-linear data into linear regression model. Maybe a polinomial equation fits the datasets I used. Also, house rental prices does not depends on number of beds, number of washrooms, area in sq. ft. only. There are also some factors what are missing in the feature matrix. Future case study may include other features as well.
 
@@ -242,12 +245,63 @@ After entering the required details in the web interface, you can click the "Pre
 
 ## Further Tweaks
 
+### System Requirements & Advanced Installation
+
+While the application runs out-of-the-box with Python 3.12+, you can optimize performance or set up a development environment using the following tools:
+
+- **uv** (recommended): Modern Python package manager.
+- **GCC**: to build the C implementations (`c_impl` and `c_pthread`) for better performance.
+
+#### Installing with uv
+
+If you have `uv` installed, you can sync the project dependencies to set up a robust environment:
+
+```bash
+uv sync --group benchmark-test
+uv pip install model_impls/*
+```
+
+This will install all model implementations (`py_impl`, `c_impl`, `c_pthread`) and set up the environment. You can then run the app with `uv run python run.py`.
+
+### Configuration and Data Processing
+
 In the [config.py](./config.py) file, you can adjust the **directory paths and URLs** if you wish to.
 By default it will download the **formatted dataset** from the `GitHub Gist` URL and save it in the `data/` directory (and will create it if not created already). You can let the program work with the messy dataset sourced from Kaggle by setting the `from_raw_csv` to `True` (in line 34) in `load_data_and_train_model` function defined in [run.py](./run.py) file. The preprocessing logic for Kaggle sourced dataset is defined in [app/handler/data/preprocess.py](./app/handler/data/preprocess.py) (in the `load_and_refit_kaggle_csv` function).
 
 You should see these logs in the terminal when you run the program:
 
 ![Terminal Logs](./images/screenshots/terminal-logs.png)
+
+### Low-Level Implementations for Performance Comparison
+
+The [`model_impls/`](./model_impls/) directory contains alternative implementations of the linear regression model for performance benchmarking:
+
+- **[`py_impl/`](./model_impls/py_impl/)**: Python implementation packaged as a library (same algorithm as the main app)
+- **[`c_impl/`](./model_impls/c_impl/)**: C implementation with Python bindings for ~10× performance improvement
+- **[`c_pthread/`](./model_impls/c_pthread/)**: Multithreaded C implementation using POSIX threads for maximum performance
+
+These implementations were created to compare performance against scikit-learn. The multithreaded C implementation **actually outperforms scikit-learn by approximately 2×** on this dataset:
+
+![C pthread vs sklearn performance](./images/graphs/speedtest_plots/c_pthread_5fold_5332d_6f.png)
+
+As shown in the graph, the `c_pthread` implementation (green line) consistently runs faster than scikit-learn (orange line) across different dataset sizes. This demonstrates that with proper low-level optimization and parallelization, it's possible to exceed even scikit-learn's highly optimized performance.
+
+For detailed speed test results and analysis, see [benchmarks/docs/speedtest.md](./benchmarks/docs/speedtest.md) and [benchmarks/docs/results_analysis.md](./benchmarks/docs/results_analysis.md).
+
+### Docker Support (For Developers/Reviewers)
+
+A [Dockerfile](./Dockerfile) is provided for **developer and reviewer convenience only**, not for general production use. It demonstrates how to:
+- Build and install the C implementations (`c_impl` and `c_pthread`)
+- Properly containerize the application
+- Configure environment variables for different implementations
+
+To build and run with Docker:
+```bash
+docker build -t dhaka-rent-predictor .
+docker run -p 5000:5000 dhaka-rent-predictor
+```
+
+The Docker setup uses the multithreaded C implementation by default for maximum performance.
 
 ## Future Plans
 
@@ -257,8 +311,8 @@ You should see these logs in the terminal when you run the program:
 
 ## Author
 
-[Rakibul Hasan Ratul](https://github.com/RakibulHasanRatul)  
-Independent Developer, Dhaka, Bangladesh  
+[Rakibul Hasan Ratul](https://github.com/RakibulHasanRatul)
+Independent Developer, Dhaka, Bangladesh
 Email: [rakibulhasanratul@proton.me](mailto:rakibulhasanratul@proton.me)
 
 ## License

@@ -1,8 +1,6 @@
-# type: ignore
-
 import pytest
 
-from app.model.matrix_calculation import (
+from model_impls.py_impl.matrix_calculation import (
     construct_identity_matrix,
     inverse,
     matrix_mul,

@@ -8,14 +8,14 @@ import timeit
 from typing import Any, Callable
 
 import matplotlib.pyplot as plt
+from py_impl import train as model_train
 from sklearn.linear_model import LinearRegression  # type:ignore
 
 from app.handler.data.download import download_csv_from_gist
 from app.helper import construct_features_list
-from app.model.linear_regression import model_train
 from app.types import TrainingVector
+from benchmarks.scripts.metrics_func import mae, mse, r_squared
 from config import FORMATTED_CSV_GIST_URL
-from performance_metrics_functions import mae, mse, r_squared
 
 
 def run_scratch_model(
@@ -224,7 +224,7 @@ def run_speedtest_and_plot_graph(
         if dataset_len > dataset_len_total:
             dataset_len = dataset_len_total
 
-    fig, ax = plt.subplots(figsize=(16, 9))  # type:ignore
+    _, ax = plt.subplots(figsize=(16, 9))  # type:ignore
     # 16:9 looks fine to me!
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)

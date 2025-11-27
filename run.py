@@ -1,4 +1,9 @@
 import os
+import sys
+from typing import Literal
+
+# Add model_impls to sys.path so that we can import them without installation
+sys.path.append(os.path.join(os.path.dirname(__file__), "model_impls")) 
 
 from app.handler.data.download import download_csv_from_gist
 from app.handler.data.load import load_csv_data
@@ -6,13 +11,15 @@ from app.handler.data.preprocess import (
     load_and_refit_kaggle_csv,
     preprocess_loaded_data,
 )
-from app.model.train import train_all_dataset
 from app.serve import serve_ui
+from app.train import train_all_dataset
 from config import FORMATTED_CSV_GIST_URL, RAW_KAGGLE_CSV_GIST_URL
 
 
 def load_data_and_train_model(
-    from_raw_csv: bool = False, url: str = "", module: str = "py_impl"
+    from_raw_csv: bool = False,
+    url: str = "",
+    module: Literal["py_impl", "c_impl", "c_pthread"] = "py_impl",
 ) -> None:
     if not url:
         url = RAW_KAGGLE_CSV_GIST_URL if from_raw_csv else FORMATTED_CSV_GIST_URL
@@ -33,10 +40,10 @@ def load_data_and_train_model(
         from c_pthread import train
 
         train_fn = train
-    else:
-        from app.model.train import model_train
+    else: # supporting garbage inputs, although not expected.
+        from py_impl import train
 
-        train_fn = model_train
+        train_fn = train
 
     formatted_data = preprocess_loaded_data(loaded_data)
 

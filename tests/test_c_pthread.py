@@ -1,7 +1,9 @@
 import pytest
 
-from c_pthread import train as train_c_impl, predict as predict_c_impl
-from app.model.linear_regression import model_train as train_python_impl
+c_pthread = pytest.importorskip("c_pthread")
+from c_pthread import predict as predict_c_impl  # noqa
+from c_pthread import train as train_c_impl  # noqa
+from py_impl import train as train_python_impl  # noqa
 
 # the python implementation is tested for expected results, that is why used here.
 

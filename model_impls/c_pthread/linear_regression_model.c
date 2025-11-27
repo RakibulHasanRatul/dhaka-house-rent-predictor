@@ -4,16 +4,16 @@
 
 #include "matrix_ops_pthread.h"
 
-double **train(const double *const *feature_vectors, const double *const *label_vectors,
+double** train(const double* const* feature_vectors, const double* const* label_vectors,
                const int n_samples, const int n_vector_elements, const double lambda) {
   // x = features, dimension n_samples x n_features
-  double **xt = transpose_matrix(feature_vectors, n_samples, n_vector_elements);
+  double** xt = transpose_matrix(feature_vectors, n_samples, n_vector_elements);
   if (!xt) {
     fprintf(stderr, "Failed to transpose feature_vectors.\n");
     return NULL;
   }
   // xt dimensions = n_features x n_samples
-  double **xtx = multiply_matrices((const double *const *)xt, feature_vectors, n_vector_elements,
+  double** xtx = multiply_matrices((const double* const*)xt, feature_vectors, n_vector_elements,
                                    n_samples, n_samples, n_vector_elements);
   if (!xtx) {
     fprintf(stderr, "Failed to multiply feature_vectors with its transpose.");
@@ -27,7 +27,7 @@ double **train(const double *const *feature_vectors, const double *const *label_
     xtx[i][i] += lambda;
   }
 
-  double **xtx_inv = inverse_matrix((const double *const *)xtx, n_vector_elements);
+  double** xtx_inv = inverse_matrix((const double* const*)xtx, n_vector_elements);
   if (!xtx_inv) {
     fprintf(stderr, "Failed to inverse xtx.");
     free_matrix(xt, n_vector_elements);
@@ -35,9 +35,9 @@ double **train(const double *const *feature_vectors, const double *const *label_
     return NULL;
   }
   // xtx_inv dimensions = n_features x n_features
-  double **xtx_inv_xt =
-      multiply_matrices((const double *const *)xtx_inv, (const double *const *)xt,
-                        n_vector_elements, n_vector_elements, n_vector_elements, n_samples);
+  double** xtx_inv_xt =
+      multiply_matrices((const double* const*)xtx_inv, (const double* const*)xt, n_vector_elements,
+                        n_vector_elements, n_vector_elements, n_samples);
   if (!xtx_inv_xt) {
     fprintf(stderr, "Failed to multiply xtx_inv with xt.");
     free_matrix(xt, n_vector_elements);
@@ -47,8 +47,8 @@ double **train(const double *const *feature_vectors, const double *const *label_
   }
   // xtx_inv_xt dimensions = n_features x n_samples
 
-  double **weights =
-      multiply_matrices((const double *const *)xtx_inv_xt, (const double *const *)label_vectors,
+  double** weights =
+      multiply_matrices((const double* const*)xtx_inv_xt, (const double* const*)label_vectors,
                         n_vector_elements, n_samples, n_samples, 1);
   if (!weights) {
     fprintf(stderr, "Failed to calculate weights.\n");
@@ -67,7 +67,7 @@ double **train(const double *const *feature_vectors, const double *const *label_
   return weights;
 }
 
-double predict(const double *const features, const double *const *weights, const int n_features) {
+double predict(const double* const features, const double* const* weights, const int n_features) {
   double prediction = weights[0][0];
   for (int i = 0; i < n_features; i++) prediction += features[i] * weights[i + 1][0];
   // Why?

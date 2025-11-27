@@ -1,5 +1,5 @@
 import pytest
-from app.model.linear_regression import model_train
+from py_impl import train as model_train
 
 
 def test_model_train_simple():

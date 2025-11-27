@@ -5,8 +5,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from _shared_func import load_all_datasets, run_speedtest_and_plot_graph
-from app.model.linear_regression import model_train
-
+from py_impl import train as model_train
 
 NUMBER_OF_FOLDS = int(os.environ.get("NUMBER_OF_FOLDS", 5))
 DATASET_LEN_INCREASE = int(os.environ.get("DATASET_LEN_INCREASE", NUMBER_OF_FOLDS * 3))

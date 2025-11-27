@@ -2,10 +2,10 @@ import json
 import os
 from typing import Callable
 
+from py_impl import train as model_train
+
 from app.types import TrainingVector
 from config import DATA_PROCESSED_DIR, WEIGHTS_JSON_DIR
-
-from .linear_regression import model_train
 
 os.makedirs(DATA_PROCESSED_DIR, exist_ok=True)
 
@@ -14,7 +14,7 @@ def train_all_dataset(
     dataset: dict[str, TrainingVector],
     train_fn: Callable[
         [list[list[float]], list[list[float]], float], list[list[float]]
-    ] = model_train,
+    ] = model_train, #defaulting python implementation 
 ):
     weights: dict[str, list[list[float]]] = {}
 

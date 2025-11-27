@@ -6,7 +6,7 @@
 from .matrix_calculation import inverse, matrix_mul, transpose
 
 
-def model_train(
+def train_model(
     x_vector: list[list[float]],
     y_vector: list[list[float]],
     lambda_l2: float = 1e-13,

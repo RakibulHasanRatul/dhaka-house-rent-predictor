@@ -1,0 +1,24 @@
+[project]
+name = "py_impl"
+version = "1.0"
+description = "Python implementation of linear regression model"
+requires-python = ">=3.12"
+dependencies = []
+
+[[project.authors]]
+name = "Rakibul Hasan Ratul"
+email = "rakibulhasanratul@proton.me"
+
+[build-system]
+requires = ["setuptools>=80.9", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["py_impl"]
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"py_impl" = "."
+
+[tool.setuptools.package-data]
+"py_impl" = ["*.py", "*.pyi"]

@@ -1,5 +1,7 @@
 # Speed Test Against scikit-learn's Linear Regression
 
+> **📊 For detailed analysis and interpretation of these results, see [Performance Analysis: Comprehensive Results Interpretation](./results_analysis.md)**
+
 This comparison highlights the trade-off between control (scratch-built) and optimization (Scikit-learn), especially in compute-constrained environments.
 
 ## Summary
@@ -21,7 +23,7 @@ However, that’s just one side of the story. The scratch implementation is defi
 
 First, I created a Python script to measure the speed of each implementation. I left the code as it is for preprocessing. The current version generates fewer elements in the feature vector for each location.
 
-After running the speed test using the [script](./speedtest_scripts/01_small_datasets.py), I got the following results:
+After running the speed test using the [script](../scripts/speedtest_scripts/01_small_datasets.py), I got the following results:
 
 ### 1st Run
 
@@ -81,7 +83,7 @@ This indicates that the scratch implementation is approximately 1.9 times faster
 
 However, it's crucial to evaluate the performance of both models on larger datasets as well. Preliminary tests indicate that while the scratch-built model performs admirably on smaller datasets, its performance may degrade with larger datasets. In contrast, scikit-learn's implementation is optimized for scalability and may outperform the scratch model in such scenarios.
 
-So, what I did here is to create a new [script](./speedtest_scripts/02_modified_preprocessing.py) changing the preprocessing function to generate larger feature set for each location.
+So, what I did here is to create a new [script](../scripts/speedtest_scripts/02_modified_preprocessing.py) changing the preprocessing function to generate larger feature set for each location.
 
 ### 1st Run with Larger Datasets
 
@@ -139,7 +141,7 @@ In summary, the speed test results indicate that the scratch-built linear regres
 
 ## Further Stresses!
 
-Although I have tested and drew a conclusion, I think a further stress test can be done to see how the scratch-built model performs with larger datasets! To do so, I will create another [script](./speedtest_scripts/03_stress_test.py) to test the speed against full datasets at once.
+Although I have tested and drew a conclusion, I think a further stress test can be done to see how the scratch-built model performs with larger datasets! To do so, I will create another [script](../scripts/speedtest_scripts/03_stress_test.py) to test the speed against full datasets at once.
 
 This will ensure that the scratch-built model is tested against the entire dataset at once, rather than per location. This will give a better understanding of how the scratch-built model performs with larger datasets.
 
@@ -200,7 +202,7 @@ It’s still surprising how a non-optimized model completes training under 0.2 s
 
 After running 2 speed tests - one with smaller dataset and another with larger dataset - it will be interesting to loop through a range and slice the feature's list for generating different length of datasets and run the speed test for each dataset! I should be using `matplotlib` to plot the speed test results.
 
-To do so, I wrote another [script](./speedtest_scripts/04_plot_py_impl.py) and plotted the plot at `images/graphs/speedtest_plots` directory. in this file, three example are added.
+To do so, I wrote another [script](../scripts/speedtest_scripts/04_plot_py_impl.py) and plotted the plot at `images/graphs/speedtest_plots` directory. in this file, three example are added.
 
 > Speed comparison between scratch-built vs scikit-learn Linear Regression across dataset sizes.
 
@@ -222,8 +224,8 @@ That’s a huge win — and a solid demonstration of what even non-optimized mod
 
 ## Low level Implementation speed test!
 While I did the stress test with python implementation, I think I should implement the core logics in a low level language and do generate a line graph to compare the speed of the two implementations.
-I used C for implementing the low level implementation. The codebase is in [`c_impl`](./c_impl/) directory.
-The implementation script is as like the same the [previous script](./speedtest_scripts/05_plot_c_impl_with_factors.py), the changes is in the import statement just!
+I used C for implementing the low level implementation. The codebase is in [`c_impl`](../../model_impls/c_impl/) directory.
+The implementation script is as like the same the [previous script](../scripts/speedtest_scripts/05_plot_c_impl_with_factors.py), the changes is in the import statement just!
 To run the script, I need to install the c_impl directory as a library. Then I can run the script.
 I ran the following commands:
 ```bash
@@ -240,8 +242,8 @@ The low level implementation (with no other algorithm) is way faster than the py
 
 
 ## Enabling Multithreading!
-While the low level implementation works seamlessly, I think I should enable multithreading and observe how it performs. The codebase is in [`c_pthread`](./c_pthread/) directory.
-As like the previous, the change is just into the import statement! Script provided in [speedtest script](./speedtest_scripts/06_plot_c_pthread_with_factors.py).
+While the low level implementation works seamlessly, I think I should enable multithreading and observe how it performs. The codebase is in [`c_pthread`](../../model_impls/c_pthread/) directory.
+As like the previous, the change is just into the import statement! Script provided in [speedtest script](../scripts/speedtest_scripts/06_plot_c_pthread_with_factors.py).
 
 I ran the script by this command:
 ```bash

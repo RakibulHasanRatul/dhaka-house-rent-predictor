@@ -1,10 +1,11 @@
-from http.server import BaseHTTPRequestHandler
+import datetime
 import json
+from http.server import BaseHTTPRequestHandler
+
 from config import LOCATION_JSON_DIR, TYPES_JSON_DIR, UI_DIR
 
 from ...helper import construct_features_list
-from ...model.predict import predict_rent
-import datetime
+from ...predict_rent import predict_rent
 
 year = datetime.datetime.now().year
 
@@ -65,7 +66,9 @@ class HttpHandler(BaseHTTPRequestHandler):
                 self.send_response(400)
                 self.send_header("Content-type", "text/plain")
                 self.end_headers()
-                self.wfile.write(b"400 Bad Request: Content-Type must be application/json")
+                self.wfile.write(
+                    b"400 Bad Request: Content-Type must be application/json"
+                )
                 return
             try:
                 data = json.loads(request_body)
@@ -90,7 +93,9 @@ class HttpHandler(BaseHTTPRequestHandler):
                     self.send_header("Content-type", "text/plain")
                     self.end_headers()
                     self.wfile.write(
-                        f"400 Bad Request: Missing key '{key}' in JSON data".encode("utf-8")
+                        f"400 Bad Request: Missing key '{key}' in JSON data".encode(
+                            "utf-8"
+                        )
                     )
                     return
 

@@ -3,11 +3,11 @@ from collections import defaultdict
 
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.linear_model import LinearRegression  # type:ignore
+from py_impl import train as model_train
+from sklearn.linear_model import LinearRegression
 
-from app.model.linear_regression import model_train
 from app.types import TrainingVector
-from performance_metrics_functions import mae, mse, r_squared
+from benchmarks.scripts.metrics_func import mae, mse, r_squared
 
 
 def run_benchmark(preprocessed_data: dict[str, TrainingVector]):
