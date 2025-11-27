@@ -308,6 +308,7 @@ The Docker setup uses the multithreaded C implementation by default for maximum 
 - **Improve UI**: Add a CSV input option for bulk predictions.
 - **Add more features**: Include more features like parking, balcony, etc. for better predictions.
 - **Deploy on a cloud platform**: Host the app on a cloud platform like Heroku or AWS for public access.
+- **Conduct a case study** : Use the scaratch built model to explore what we lose and what we gain via implementing a machine learning model from the first principles.
 
 ## Author
 
